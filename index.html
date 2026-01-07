@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STARLIGHT ENTERTAINMENT</title>
+    <title>ARTIX ENTERTAINMENT</title>
     <!-- 폰트: 구글 폰트 (Noto Sans KR) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -11,7 +11,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #111; /* 엔터사는 보통 검은 배경 */
+            background-color: #111;
             color: #fff;
             line-height: 1.6;
             overflow-x: hidden;
@@ -19,13 +19,13 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- 네비게이션 바 (상단 고정) --- */
+        /* --- 네비게이션 바 --- */
         nav {
             position: fixed;
             top: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px;
-            background: rgba(0, 0, 0, 0.8); /* 반투명 검정 */
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 1000;
         }
@@ -34,85 +34,93 @@
         .menu a { font-size: 14px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .menu a:hover { opacity: 1; color: #ff3366; }
 
-        /* --- 1. 메인 히어로 섹션 (첫 화면) --- */
+        /* --- 1. 메인 히어로 섹션 --- */
         header {
-            height: 100vh; /* 화면 꽉 차게 */
+            height: 100vh;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             text-align: center;
-            /* 배경 이미지 (무료 이미지 예시) */
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-4.0.3&w=1920&q=80');
             background-size: cover;
             background-position: center;
         }
         header h1 { font-size: 60px; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
         header p { font-size: 20px; font-weight: 300; margin-bottom: 40px; }
         .btn {
-            padding: 15px 40px;
-            border: 2px solid #fff;
-            background: transparent;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+            padding: 15px 40px; border: 2px solid #fff; background: transparent;
+            color: #fff; font-weight: bold; cursor: pointer; transition: 0.3s;
         }
         .btn:hover { background: #fff; color: #000; }
 
         /* --- 공통 섹션 스타일 --- */
         section { padding: 100px 20px; text-align: center; }
         .section-title {
-            font-size: 40px; font-weight: 900; margin-bottom: 60px;
+            font-size: 40px; font-weight: 900; margin-bottom: 80px;
             text-transform: uppercase; letter-spacing: 3px;
             position: relative; display: inline-block;
         }
-        /* 제목 밑줄 효과 */
         .section-title::after {
             content: ''; display: block; width: 50%; height: 3px;
             background: #ff3366; margin: 10px auto 0;
         }
 
-        /* --- 2. 회사 소개 (COMPANY) --- */
+        /* --- 2. 회사 소개 --- */
         #company { background-color: #111; }
         .company-text { max-width: 800px; margin: 0 auto; font-size: 18px; color: #ccc; }
 
-        /* --- 3. 아티스트 (ARTISTS) --- */
+        /* --- 3. 아티스트 (디자인 업그레이드) --- */
         #artists { background-color: #1a1a1a; }
+        
+        .group-container { margin-bottom: 100px; }
+        .group-name {
+            font-size: 32px; font-weight: 800; color: #ff3366;
+            margin-bottom: 40px; letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+        }
+        
         .artist-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 반응형 그리드 */
-            gap: 30px;
-            max-width: 1200px; margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1400px; margin: 0 auto;
         }
-        .artist-card {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
+        .artist-card { 
+            position: relative; overflow: hidden; cursor: pointer; 
+            background: #222; border-radius: 8px;
         }
         .artist-card img {
-            width: 100%; height: 400px; object-fit: cover;
-            transition: transform 0.5s;
-            filter: grayscale(100%); /* 흑백 처리 */
+            width: 100%; height: 300px; object-fit: cover;
+            transition: transform 0.5s; filter: grayscale(100%);
         }
-        .artist-card:hover img {
-            transform: scale(1.1); /* 확대 효과 */
-            filter: grayscale(0%); /* 컬러로 변경 */
+        .artist-card:hover img { transform: scale(1.1); filter: grayscale(0%); }
+        
+        .info-box { padding: 15px; text-align: left; }
+        .member-name {
+            font-size: 20px; font-weight: 700; color: #fff;
         }
-        .artist-name {
-            margin-top: 15px; font-size: 20px; font-weight: 700; letter-spacing: 1px;
+        .member-age { font-size: 14px; color: #888; font-weight: 400; margin-left: 5px; }
+        .member-role {
+            font-size: 13px; color: #ff3366; margin-top: 5px; font-weight: 600;
+            text-transform: uppercase;
         }
 
-        /* --- 4. 오디션 (AUDITION) --- */
+        /* 연습생 섹션 스타일 */
+        .trainee-badge {
+            background: #333; color: #aaa; padding: 2px 8px; 
+            border-radius: 4px; font-size: 12px;
+        }
+
+        /* --- 4. 오디션 --- */
         #audition {
             background: linear-gradient(45deg, #ff3366, #ff6b6b);
             color: white;
         }
         .audition-box {
-            background: rgba(0,0,0,0.2);
-            padding: 40px; border-radius: 10px;
-            max-width: 600px; margin: 0 auto;
+            background: rgba(0,0,0,0.2); padding: 40px;
+            border-radius: 10px; max-width: 600px; margin: 0 auto;
         }
-        .audition-box h3 { font-size: 28px; margin-bottom: 20px; }
         .apply-btn {
             background: #fff; color: #ff3366; border: none;
             padding: 15px 50px; font-size: 18px; font-weight: bold;
@@ -121,23 +129,19 @@
         .apply-btn:hover { background: #000; color: #fff; }
 
         /* --- 푸터 --- */
-        footer {
-            padding: 50px; background: #000; text-align: center; color: #555; font-size: 14px;
-        }
-
+        footer { padding: 50px; background: #000; text-align: center; color: #555; }
+        
         /* 모바일 대응 */
         @media (max-width: 768px) {
             header h1 { font-size: 40px; }
-            nav { padding: 20px; }
-            .menu { display: none; } /* 모바일에선 메뉴 숨김 (간단히 처리) */
+            .artist-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
 
-    <!-- 상단 네비게이션 -->
     <nav>
-        <div class="logo">STARLIGHT</div>
+        <div class="logo">ARTIX</div>
         <div class="menu">
             <a href="#company">COMPANY</a>
             <a href="#artists">ARTISTS</a>
@@ -145,64 +149,249 @@
         </div>
     </nav>
 
-    <!-- 1. 메인 비주얼 (Hero) -->
     <header>
         <h1>We Make Stars</h1>
-        <p>당신의 꿈이 현실이 되는 곳, 스타라이트 엔터테인먼트</p>
-        <button class="btn" onclick="location.href='#audition'">오디션 지원하기</button>
+        <p>ARTIX ENTERTAINMENT 공식 홈페이지</p>
+        <button class="btn" onclick="location.href='#artists'">아티스트 보기</button>
     </header>
 
-    <!-- 2. 회사 소개 -->
     <section id="company">
         <h2 class="section-title">Company</h2>
         <div class="company-text">
             <p>음악으로 세상을 연결하고, 새로운 문화를 창조합니다.</p>
-            <br>
-            <p>스타라이트 엔터테인먼트는 아티스트의 고유한 개성을 존중하며<br>
-            글로벌 무대에서 빛날 수 있도록 최고의 매니지먼트를 제공합니다.</p>
         </div>
     </section>
 
-    <!-- 3. 아티스트 소개 -->
     <section id="artists">
         <h2 class="section-title">Artists</h2>
-        <div class="artist-grid">
-            <!-- 아티스트 1 -->
-            <div class="artist-card">
-                <img src="https://images.unsplash.com/photo-1516280440614-6697288d5d38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Artist 1">
-                <div class="artist-name">LUNA</div>
-            </div>
-            <!-- 아티스트 2 -->
-            <div class="artist-card">
-                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Artist 2">
-                <div class="artist-name">THE BOYZ</div>
-            </div>
-            <!-- 아티스트 3 -->
-            <div class="artist-card">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Artist 3">
-                <div class="artist-name">JESSICA</div>
+
+        <!-- 1. N/A -->
+        <div class="group-container">
+            <div class="group-name">N/A <span style="font-size:16px; color:#666;">IDOL</span></div>
+            <div class="artist-grid">
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/d218ddf2-3071-45d2-8b3e-0f709d57f60e.jpeg?raw=true" alt="JAY">
+                    <div class="info-box">
+                        <div class="member-name">JAY<span class="member-age">(25)</span></div>
+                        <div class="member-role">Leader / Main Rapper / Producer</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/029a0019-5ab3-4ee9-8ead-aab1af9dff1b.jpeg?raw=true" alt="서은우">
+                    <div class="info-box">
+                        <div class="member-name">서은우<span class="member-age">(24)</span></div>
+                        <div class="member-role">Main Vocal / Visual Center</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/607257eb-ea4b-42a1-940f-34de986ec790.jpeg?raw=true" alt="최유준">
+                    <div class="info-box">
+                        <div class="member-name">최유준<span class="member-age">(24)</span></div>
+                        <div class="member-role">Main Dancer / Sub Vocal</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/50e3777b-f8f0-4e51-b139-892439320157.jpeg?raw=true" alt="한태오">
+                    <div class="info-box">
+                        <div class="member-name">한태오<span class="member-age">(23)</span></div>
+                        <div class="member-role">Sub Rapper / Lead Visual</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/3675b1f0-76e5-4d1b-abc4-0644b2879a83.jpeg?raw=true" alt="김도윤">
+                    <div class="info-box">
+                        <div class="member-name">김도윤<span class="member-age">(21)</span></div>
+                        <div class="member-role">Sub Vocal / Maknae</div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- 2. 이온 (EON) -->
+        <div class="group-container">
+            <div class="group-name">EON<span style="font-size:16px; color:#666;"> IDOL</span></div>
+            <div class="artist-grid">
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/b500528c-23ce-43a2-b75b-881a98c796ed.jpeg?raw=true" alt="권태하">
+                    <div class="info-box">
+                        <div class="member-name">권태하<span class="member-age">(28)</span></div>
+                        <div class="member-role">Leader / Rapper</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/b69420ca-cabb-4745-91ce-333618ab924d.jpeg?raw=true" alt="이선율">
+                    <div class="info-box">
+                        <div class="member-name">이선율<span class="member-age">(26)</span></div>
+                        <div class="member-role">Main Vocal / Producer</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/d565d161-b676-4f1e-a883-e842b1843c8f.jpeg?raw=true" alt="윤하준">
+                    <div class="info-box">
+                        <div class="member-name">윤하준<span class="member-age">(24)</span></div>
+                        <div class="member-role">Main Dancer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. TRIGAЯ -->
+        <div class="group-container">
+            <div class="group-name">TRIGAЯ<span style="font-size:16px; color:#666;"> IDOL</span></div>
+            <div class="artist-grid">
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/04d69781-002f-4961-9363-2e0464226bfa.jpeg?raw=true" alt="강도진">
+                    <div class="info-box">
+                        <div class="member-name">강도진<span class="member-age">(25)</span></div>
+                        <div class="member-role">Leader / Main Rapper</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/fd821b73-1a1c-42d4-b4d2-418ed491bfdd.jpeg?raw=true" alt="류시안">
+                    <div class="info-box">
+                        <div class="member-name">류시안<span class="member-age">(23)</span></div>
+                        <div class="member-role">Center / Sub Vocal</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/894ec6b2-18e1-41b9-b185-67f40d496824.jpeg?raw=true" alt="민하준">
+                    <div class="info-box">
+                        <div class="member-name">민하준<span class="member-age">(24)</span></div>
+                        <div class="member-role">Main Vocal</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/8bd09fce-cc4e-4cc3-a3ea-73f91809bb16.jpeg?raw=true" alt="서태양">
+                    <div class="info-box">
+                        <div class="member-name">서태양<span class="member-age">(22)</span></div>
+                        <div class="member-role">Main Dancer / Rapper</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/44716e91-94cf-4c2c-aa52-d6be4df6d642.jpeg?raw=true" alt="이서윤">
+                    <div class="info-box">
+                        <div class="member-name">이서윤<span class="member-age">(21)</span></div>
+                        <div class="member-role">Sub Vocal</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/5ed4d387-a9d8-4628-953d-eaee1d8bb2f2.jpeg?raw=true" alt="신카인">
+                    <div class="info-box">
+                        <div class="member-name">신카인<span class="member-age">(24)</span></div>
+                        <div class="member-role">Lead Vocal</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 미드나잇 블루 (BAND) -->
+        <div class="group-container">
+            <div class="group-name">Midnight Blue <span style="font-size:16px; color:#666;"> Band</span></div>
+            <div class="artist-grid">
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/f37d5d49-e906-4dc6-9b00-367469cb49b5.jpeg?raw=true" alt="권시우">
+                    <div class="info-box">
+                        <div class="member-name">권시우<span class="member-age">(23)</span></div>
+                        <div class="member-role">Synthesizer</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/2e1b424b-bad3-4975-8e4c-6271bd424945.jpeg?raw=true" alt="차이현">
+                    <div class="info-box">
+                        <div class="member-name">차이현<span class="member-age">(21)</span></div>
+                        <div class="member-role">Vocal & Bass</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/ea00be77-2d83-4a6c-9425-4f896c108a84.jpeg?raw=true" alt="서주원">
+                    <div class="info-box">
+                        <div class="member-name">서주원<span class="member-age">(21)</span></div>
+                        <div class="member-role">Electric Guitar</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <!-- 여성 멤버 이미지 적용 -->
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/4918a27d-049b-46e0-91be-41764b5f2b48.jpeg?raw=true" alt="임수아">
+                    <div class="info-box">
+                        <div class="member-name">임수아<span class="member-age">(20)</span></div>
+                        <div class="member-role">2nd Vocal & Keyboard</div>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/37e8451f-0119-4716-98d1-5235af6fc77f.jpeg?raw=true" alt="GLiTCH">
+                    <div class="info-box">
+                        <div class="member-name">GLiTCH<span class="member-age">(20)</span></div>
+                        <div class="member-role">Drum</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 연습생 (TRAINEES) -->
+        <div class="group-container">
+            <div class="group-name" style="color:#aaa;">TRAINEES</div>
+            <div class="artist-grid">
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/4ab4e01a-482f-4185-87b8-45bdd31bfc8a%20(1).jpeg?raw=true" alt="유채운">
+                    <div class="info-box">
+                        <div class="member-name">유채운<span class="member-age">(22)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/d7d76d4f-b7a3-40db-a4e9-1f69b236d77b.jpeg?raw=true" alt="한서준">
+                    <div class="info-box">
+                        <div class="member-name">한서준<span class="member-age">(21)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/c797938e-b54e-4f25-9dcb-4778adca5c92.jpeg?raw=true" alt="에이든">
+                    <div class="info-box">
+                        <div class="member-name">에이든<span class="member-age">(20)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <!-- 여성 연습생 -->
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/c2e4078c-94b3-4413-957b-a9942af841df.jpeg?raw=true" alt="채이현">
+                    <div class="info-box">
+                        <div class="member-name">채이현<span class="member-age">(22)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/35e5c942-c890-4d1e-bebd-8ceb6c0b149d.jpeg?raw=true" alt="엘라 정">
+                    <div class="info-box">
+                        <div class="member-name">엘라 정<span class="member-age">(22)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/9cd1dacc-659d-45fa-8868-71e991855e0f.jpeg?raw=true" alt="김세아">
+                    <div class="info-box">
+                        <div class="member-name">김세아<span class="member-age">(20)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <!-- 4. 오디션 정보 -->
     <section id="audition">
         <h2 class="section-title">Audition</h2>
         <div class="audition-box">
-            <h3>2024 GLOBAL AUDITION</h3>
-            <p>모집분야: 보컬 / 댄스 / 랩 / 연기</p>
-            <p>지원자격: 국적, 성별, 나이 무관</p>
+            <h3>GLOBAL AUDITION 2026</h3>
+            <p>지원분야: 보컬 / 댄스 / 랩 / 악기</p>
             <br>
-            <p>당신의 재능을 기다립니다.</p>
-            <button class="apply-btn">지원서 작성하기</button>
+            <p>꿈을 향한 첫 걸음, ARTIX가 함께합니다.</p>
+            <button class="apply-btn">지원하기</button>
         </div>
     </section>
 
-    <!-- 푸터 -->
     <footer>
-        <p>상호명: 스타라이트 엔터테인먼트 | 대표: 홍길동</p>
-        <p>주소: 서울특별시 강남구 테헤란로 123</p>
-        <p>&copy; 2024 STARLIGHT ENTERTAINMENT. All Rights Reserved.</p>
+        <p>&copy; 2026 ARTIX ENTERTAINMENT.</p>
     </footer>
 
 </body>

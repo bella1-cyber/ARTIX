@@ -399,4 +399,62 @@
                 <!-- 여성 연습생 -->
                 <div class="artist-card">
                     <img src="https://github.com/bella1-cyber/bella/blob/main/c2e4078c-94b3-4413-957b-a9942af841df.jpeg?raw=true" alt="채이현">
-                    <div class="i
+                    <div class="info-box">
+                        <div class="member-name">채이현<span class="member-age">(22)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/35e5c942-c890-4d1e-bebd-8ceb6c0b149d.jpeg?raw=true" alt="엘라 정">
+                    <div class="info-box">
+                        <div class="member-name">엘라 정<span class="member-age">(22)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+                <div class="artist-card">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/9cd1dacc-659d-45fa-8868-71e991855e0f.jpeg?raw=true" alt="김세아">
+                    <div class="info-box">
+                        <div class="member-name">김세아<span class="member-age">(20)</span></div>
+                        <span class="trainee-badge">Trainee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="audition">
+        <h2 class="section-title">Audition</h2>
+        <div class="audition-box">
+            <h3>GLOBAL AUDITION 2026</h3>
+            <p>지원분야: 보컬 / 댄스 / 랩 / 악기</p>
+            <br>
+            <p>꿈을 향한 첫 걸음, ARTIX가 함께합니다.</p>
+            <button class="apply-btn">지원하기</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ARTIX ENTERTAINMENT.</p>
+    </footer>
+
+    <!-- [추가됨] 자바스크립트: 버튼 누르면 음악 재생/정지 -->
+    <script>
+        function toggleMusic() {
+            var audio = document.getElementById("bgm");
+            var player = document.getElementById("musicPlayer");
+            var text = document.getElementById("playText");
+
+            if (audio.paused) {
+                audio.play();
+                player.classList.add("playing"); // 회전 시작
+                text.innerText = "PLAYING..";
+            } else {
+                audio.pause();
+                player.classList.remove("playing"); // 회전 멈춤
+                text.innerText = "PLAY BGM";
+            }
+        }
+    </script>
+</body>
+</html>

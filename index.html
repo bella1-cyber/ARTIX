@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Put your HTML text here<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -27,12 +27,13 @@
         nav {
             position: fixed; top: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 50px; background: rgba(0, 0, 0, 0.85);
+            padding: 20px 50px; background: rgba(0, 0, 0, 0.9); /* 배경 더 진하게 */
             backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
         }
         .logo { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; letter-spacing: 2px; color: #fff; cursor: pointer; }
         .menu { display: flex; gap: 40px; }
-        .menu a { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+        .menu a { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; white-space: nowrap; }
         .menu a:hover { opacity: 1; color: #ff3366; }
 
         /* --- [무빙 슬로건 (Marquee)] --- */
@@ -137,6 +138,36 @@
         .member-role { font-size: 13px; color: #ff3366; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .click-hint { font-size: 11px; color: #555; margin-top: 15px; display: block; text-align: right; }
 
+        /* --- [디스코그래피 (앨범 가사집)] --- */
+        #discography { background: #0f0f0f; }
+        .album-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px; max-width: 1200px; margin: 0 auto;
+        }
+        .album-card {
+            position: relative; cursor: pointer; perspective: 1000px;
+        }
+        .album-cover-box {
+            position: relative; width: 100%; aspect-ratio: 1/1;
+            background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.5s; z-index: 2;
+        }
+        .album-cover-box img { width: 100%; height: 100%; object-fit: cover; }
+        /* LP판 효과 */
+        .vinyl-record {
+            position: absolute; top: 5px; right: 5px; bottom: 5px; left: 5px;
+            background: url('https://png.pngtree.com/png-vector/20220611/ourmid/pngtree-vinyl-record-png-image_4960384.png') no-repeat center;
+            background-size: contain; border-radius: 50%;
+            transition: 0.5s; z-index: 1; opacity: 0;
+        }
+        .album-card:hover .vinyl-record {
+            transform: translateX(40%) rotate(180deg); opacity: 1;
+        }
+        .album-info { margin-top: 20px; text-align: center; }
+        .album-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+        .album-artist { font-size: 14px; color: #888; text-transform: uppercase; }
+
+
         /* --- [오디션] --- */
         #audition { 
             background: linear-gradient(135deg, #111 0%, #222 100%); 
@@ -192,33 +223,42 @@
         .modal-details strong { color: #fff; display: inline-block; width: 80px; }
         .modal-msg { margin-top: 20px; font-style: italic; color: #888; font-size: 14px; }
         
-        /* [NEW] 버튼 스타일들 (색상 변경됨: 톤다운된 레드/그린) */
-        
-        /* UNSAFE 버튼 (차분한 붉은색) */
+        /* 버튼 스타일들 (차분한 톤) */
         .btn-unsafe {
-            display: inline-block;
-            background: #222; 
-            color: #ef5350; /* 톤다운된 레드 */
-            border: 1px solid #ef5350;
+            display: inline-block; background: #222; 
+            color: #ef5350; border: 1px solid #ef5350;
             padding: 10px 20px; border-radius: 5px; 
             font-weight: bold; font-size: 13px; text-transform: uppercase;
             transition: 0.3s; text-align: center;
         }
         .btn-unsafe:hover { background: #ef5350; color: #fff; }
 
-        /* SAFE 버튼 (차분한 녹색) */
         .btn-safe {
-            display: inline-block;
-            background: #222; 
-            color: #66bb6a; /* 톤다운된 그린 */
-            border: 1px solid #66bb6a;
+            display: inline-block; background: #222; 
+            color: #66bb6a; border: 1px solid #66bb6a;
             padding: 10px 20px; border-radius: 5px; 
             font-weight: bold; font-size: 13px; text-transform: uppercase;
             transition: 0.3s; text-align: center;
         }
         .btn-safe:hover { background: #66bb6a; color: #fff; }
-
         .dual-btn-box { display: flex; gap: 10px; margin-top: 15px; }
+
+        /* 앨범 가사집 모달 스타일 */
+        .album-modal-content { height: 80vh; max-width: 1000px; }
+        .album-details-container { display: flex; width: 100%; height: 100%; }
+        .album-art-view { 
+            width: 40%; background: #000; display: flex; justify-content: center; align-items: center; 
+            border-right: 1px solid #222;
+        }
+        .album-art-view img { width: 80%; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .album-lyrics-view { 
+            width: 60%; padding: 40px; overflow-y: auto; text-align: left;
+        }
+        .album-lyrics-view h2 { color: #ff3366; font-size: 30px; margin-bottom: 5px; }
+        .album-lyrics-view p.artist-tag { color: #888; font-size: 14px; margin-bottom: 30px; }
+        .track-box { margin-bottom: 40px; }
+        .track-title { font-size: 18px; font-weight: bold; color: #fff; margin-bottom: 10px; border-left: 3px solid #ff3366; padding-left: 10px; }
+        .lyrics-text { font-size: 14px; color: #ccc; white-space: pre-line; line-height: 1.8; }
 
         /* 오디션 폼 모달 상세 */
         .audition-form-box { width: 100%; padding: 40px; text-align: center; }
@@ -231,15 +271,35 @@
             z-index: 10;
         }
 
-        /* [모바일 대응] */
+        /* [모바일 대응 - 폰트 겹침 해결] */
         @media (max-width: 768px) {
-            header h1 { font-size: 40px; }
+            /* 네비게이션 수정 */
+            nav {
+                flex-direction: column; /* 세로 배치 */
+                padding: 15px 20px;     /* 패딩 줄임 */
+                height: auto;
+            }
+            .menu {
+                gap: 20px;              /* 메뉴 사이 간격 */
+                margin-top: 15px;       /* 로고와 메뉴 사이 간격 */
+                flex-wrap: wrap;        /* 줄바꿈 허용 */
+                justify-content: center;
+            }
+            .menu a { font-size: 12px; } /* 글자 크기 살짝 줄임 */
+
+            /* 위치 조정 */
+            .marquee-container { top: 100px; } /* 네비게이션이 두꺼워져서 내림 */
+            header { padding-top: 150px; }     /* 헤더 내용도 내림 */
+            header h1 { font-size: 36px; }
+
+            /* 그리드 및 모달 조정 */
             .artist-grid { grid-template-columns: repeat(2, 1fr); }
             .modal-content { flex-direction: column; max-height: 80vh; overflow-y: auto; }
             .modal-img-box, .modal-info-box { width: 100%; }
             .modal-img-box { height: 300px; }
-            .marquee-container { top: 60px; }
-            header { padding-top: 100px; }
+            .album-details-container { flex-direction: column; }
+            .album-art-view, .album-lyrics-view { width: 100%; }
+            .album-art-view { height: 300px; }
         }
     </style>
 </head>
@@ -262,10 +322,10 @@
         <div class="play-text" id="playText">PLAY BGM</div>
     </div>
 
-    <!-- 4. 상세정보 모달 (팝업) -->
+    <!-- 4. 아티스트 상세정보 모달 -->
     <div class="modal-overlay" id="artistModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <button class="close-btn" onclick="closeModal('artistModal')">&times;</button>
             <div class="modal-img-box">
                 <img id="modalImg" src="" alt="">
             </div>
@@ -278,10 +338,8 @@
                     <p><strong>MBTI</strong> <span id="modalMbti">ENTP</span></p>
                 </div>
                 
-                <!-- [1] 일반 아티스트용 버튼 (하나: UNSAFE) -->
+                <!-- 버튼 영역 -->
                 <a id="modalLink" href="#" target="_blank" class="btn-unsafe" style="display:none; width: fit-content;">UNSAFE ↗</a>
-
-                <!-- [2] 미드나잇 블루 & 특정 연습생용 버튼 (두 개: UNSAFE / SAFE) -->
                 <div id="dualBtnBox" class="dual-btn-box" style="display:none;">
                     <a id="btnUnsafe" href="#" target="_blank" class="btn-unsafe">UNSAFE ↗</a>
                     <a id="btnSafe" href="#" target="_blank" class="btn-safe">SAFE ↗</a>
@@ -292,14 +350,33 @@
         </div>
     </div>
 
-    <!-- 5. 오디션 지원 모달 (Fake) -->
+    <!-- 5. 앨범 가사집 모달 -->
+    <div class="modal-overlay" id="albumModal">
+        <div class="modal-content album-modal-content">
+            <button class="close-btn" onclick="closeModal('albumModal')">&times;</button>
+            <div class="album-details-container">
+                <div class="album-art-view">
+                    <img id="albumCoverImg" src="" alt="Album Cover">
+                </div>
+                <div class="album-lyrics-view">
+                    <h2 id="albumTitleDisplay">Album Title</h2>
+                    <p id="albumArtistDisplay" class="artist-tag">Artist Name</p>
+                    <div id="lyricsContainer">
+                        <!-- 가사 내용 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 오디션 지원 모달 -->
     <div class="modal-overlay" id="auditionModal">
         <div class="modal-content" style="max-width: 500px;">
-            <button class="close-btn" onclick="closeAudition()">&times;</button>
+            <button class="close-btn" onclick="closeModal('auditionModal')">&times;</button>
             <div class="audition-form-box">
                 <h2 style="margin-bottom: 20px; color:#ff3366;">APPLY NOW</h2>
                 <p style="margin-bottom: 20px; font-size: 14px; color:#aaa;">꿈을 향한 도전, ARTIX가 응원합니다.</p>
-                <form onsubmit="alert('지원해 주셔서 감사합니다!\n꼼꼼히 검토 후 합격자에 한해 개별 연락 드리겠습니다.'); closeAudition(); return false;">
+                <form onsubmit="alert('지원해 주셔서 감사합니다!\n꼼꼼히 검토 후 합격자에 한해 개별 연락 드리겠습니다.'); closeModal('auditionModal'); return false;">
                     <input type="text" class="form-input" placeholder="이름 (Name)" required>
                     <input type="email" class="form-input" placeholder="이메일 (Email)" required>
                     <input type="text" class="form-input" placeholder="연락처 (Phone)" required>
@@ -316,6 +393,7 @@
         <div class="menu">
             <a href="#company">COMPANY</a>
             <a href="#artists">ARTISTS</a>
+            <a href="#discography">ALBUMS</a>
             <a href="#audition">AUDITION</a>
         </div>
     </nav>
@@ -381,7 +459,7 @@
             </div>
         </div>
 
-        <!-- [4] Midnight Blue (두 개 버튼 적용됨) -->
+        <!-- [4] Midnight Blue -->
         <div class="group-container">
             <div class="group-name">Midnight Blue <span>BAND</span></div>
             <div class="artist-grid">
@@ -393,19 +471,73 @@
             </div>
         </div>
 
-        <!-- [5] TRAINEES (일부 두 개 버튼 적용됨) -->
+        <!-- [5] TRAINEES -->
         <div class="group-container">
             <div class="group-name" style="color:#aaa;">TRAINEES</div>
             <div class="artist-grid">
-                <!-- 유채운, 한서준, 에이든은 두 개 버튼 -->
                 <div class="artist-card" onclick="openModal('chaeun')"><img src="https://github.com/bella1-cyber/bella/blob/main/4ab4e01a-482f-4185-87b8-45bdd31bfc8a%20(1).jpeg?raw=true"><div class="info-box"><div class="member-name">유채운</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
                 <div class="artist-card" onclick="openModal('seojun')"><img src="https://github.com/bella1-cyber/bella/blob/main/d7d76d4f-b7a3-40db-a4e9-1f69b236d77b.jpeg?raw=true"><div class="info-box"><div class="member-name">한서준</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
                 <div class="artist-card" onclick="openModal('aiden')"><img src="https://github.com/bella1-cyber/bella/blob/main/c797938e-b54e-4f25-9dcb-4778adca5c92.jpeg?raw=true"><div class="info-box"><div class="member-name">에이든</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
-                <!-- 나머지는 하나 버튼 (UNSAFE) -->
                 <div class="artist-card" onclick="openModal('chaeihyun')"><img src="https://github.com/bella1-cyber/bella/blob/main/c2e4078c-94b3-4413-957b-a9942af841df.jpeg?raw=true"><div class="info-box"><div class="member-name">채이현</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
                 <div class="artist-card" onclick="openModal('ella')"><img src="https://github.com/bella1-cyber/bella/blob/main/35e5c942-c890-4d1e-bebd-8ceb6c0b149d.jpeg?raw=true"><div class="info-box"><div class="member-name">엘라 정</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
                 <div class="artist-card" onclick="openModal('seah')"><img src="https://github.com/bella1-cyber/bella/blob/main/9cd1dacc-659d-45fa-8868-71e991855e0f.jpeg?raw=true"><div class="info-box"><div class="member-name">김세아</div><div class="member-role">Trainee</div><span class="click-hint">Click for Profile ↗</span></div></div>
             </div>
+        </div>
+    </section>
+
+    <!-- [NEW] 디스코그래피 섹션 (가사집) -->
+    <section id="discography">
+        <h2 class="section-title">Discography</h2>
+        <div class="album-grid">
+            
+            <!-- 앨범 1: N/A -->
+            <div class="album-card" onclick="openAlbum('na_1st')">
+                <div class="album-cover-box">
+                    <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&w=500&q=80" alt="Album Cover">
+                    <div class="vinyl-record"></div>
+                </div>
+                <div class="album-info">
+                    <div class="album-title">The Beginning</div>
+                    <div class="album-artist">N/A</div>
+                </div>
+            </div>
+
+            <!-- 앨범 2: EON -->
+            <div class="album-card" onclick="openAlbum('eon_1st')">
+                <div class="album-cover-box">
+                    <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-4.0.3&w=500&q=80" alt="Album Cover">
+                    <div class="vinyl-record"></div>
+                </div>
+                <div class="album-info">
+                    <div class="album-title">Blue Moon</div>
+                    <div class="album-artist">EON</div>
+                </div>
+            </div>
+
+            <!-- 앨범 3: TRIGAЯ -->
+            <div class="album-card" onclick="openAlbum('triga_1st')">
+                <div class="album-cover-box">
+                    <img src="https://images.unsplash.com/photo-1514525253440-b393452e8d26?ixlib=rb-4.0.3&w=500&q=80" alt="Album Cover">
+                    <div class="vinyl-record"></div>
+                </div>
+                <div class="album-info">
+                    <div class="album-title">Trigger Warning</div>
+                    <div class="album-artist">TRIGAЯ</div>
+                </div>
+            </div>
+
+            <!-- 앨범 4: Midnight Blue -->
+            <div class="album-card" onclick="openAlbum('mid_1st')">
+                <div class="album-cover-box">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&w=500&q=80" alt="Album Cover">
+                    <div class="vinyl-record"></div>
+                </div>
+                <div class="album-info">
+                    <div class="album-title">Night Drive</div>
+                    <div class="album-artist">Midnight Blue</div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -478,21 +610,17 @@
         }
 
         // --- [2] 아티스트 데이터베이스 ---
-        // (미드나잇 블루, 유채운, 한서준, 에이든은 url 대신 url_unsafe / url_safe 사용)
         const artistDB = {
-            // N/A
             'jay': { name: 'JAY (제이)', role: 'Leader / Main Rapper', birth: '2001. 11. 04', height: '187cm', mbti: 'INTJ', url: 'https://share.crack.wrtn.ai/isg516', msg: '"단 1초도 눈을 뗄 수 없는 완벽한 무대로 증명하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/d218ddf2-3071-45d2-8b3e-0f709d57f60e.jpeg?raw=true' },
             'eunwoo': { name: 'SEO EUNWOO (서은우)', role: 'Main Vocal', birth: '2002. 03. 12', height: '179cm', mbti: 'ISFP', url: 'https://share.crack.wrtn.ai/isg516', msg: '"여러분의 하루를 밝히는 가장 따뜻한 햇살이 되어드릴게요."', img: 'https://github.com/bella1-cyber/bella/blob/main/029a0019-5ab3-4ee9-8ead-aab1af9dff1b.jpeg?raw=true' },
             'yujun': { name: 'CHOI YUJUN (최유준)', role: 'Main Dancer', birth: '2002. 08. 22', height: '183cm', mbti: 'ESFP', url: 'https://share.crack.wrtn.ai/w421fc', msg: '"오늘 밤, 여러분의 심장을 훔치러 왔습니다! 즐길 준비 되셨나요?"', img: 'https://github.com/bella1-cyber/bella/blob/main/607257eb-ea4b-42a1-940f-34de986ec790.jpeg?raw=true' },
             'taeo': { name: 'HAN TAEO (한태오)', role: 'Visual / Sub Rapper', birth: '2003. 07. 07', height: '185cm', mbti: 'ISTJ', url: 'https://share.crack.wrtn.ai/w421fc', msg: '"변치 않는 초심으로, 묵묵히 그리고 꾸준히 나아가겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/50e3777b-f8f0-4e51-b139-892439320157.jpeg?raw=true' },
             'doyun': { name: 'KIM DOYUN (김도윤)', role: 'Maknae / Vocal', birth: '2005. 12. 25', height: '177cm', mbti: 'INFP', url: 'https://share.crack.wrtn.ai/w421fc', msg: '"여러분의 마음에 오래도록 남는 노래를 부르고 싶어요."', img: 'https://github.com/bella1-cyber/bella/blob/main/3675b1f0-76e5-4d1b-abc4-0644b2879a83.jpeg?raw=true' },
             
-            // EON
             'taeha': { name: 'KWON TAEHA (권태하)', role: 'Leader', birth: '1998. 04. 08', height: '187cm', mbti: 'ISFJ', url: 'https://share.crack.wrtn.ai/ruwbqh', msg: '"믿고 듣는 음악, 믿고 보는 무대. 이온이 책임지겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/b500528c-23ce-43a2-b75b-881a98c796ed.jpeg?raw=true' },
             'seonyul': { name: 'LEE SEONYUL (이선율)', role: 'Main Vocal', birth: '2000. 11. 22', height: '185cm', mbti: 'ENTP', url: 'https://share.crack.wrtn.ai/ruwbqh', msg: '"뻔한 건 재미없잖아요? 세상에 없던 음악을 들려드릴게요."', img: 'https://github.com/bella1-cyber/bella/blob/main/b69420ca-cabb-4745-91ce-333618ab924d.jpeg?raw=true' },
             'hajun_eon': { name: 'YOON HAJUN (윤하준)', role: 'Main Dancer', birth: '2002. 09. 15', height: '180cm', mbti: 'ENFP', url: 'https://instagram.com', msg: '"지칠 땐 저를 보세요! 여러분의 인간 비타민이 되겠습니다!"', img: 'https://github.com/bella1-cyber/bella/blob/main/d565d161-b676-4f1e-a883-e842b1843c8f.jpeg?raw=true' },
             
-            // TRIGAЯ
             'dojin': { name: 'KANG DOJIN (강도진)', role: 'Leader', birth: '2002. 08. 01', height: '184cm', mbti: 'ENTJ', url: 'https://share.crack.wrtn.ai/951lot', msg: '"TRIGAЯ, We pull the trigger."', img: 'https://github.com/bella1-cyber/bella/blob/main/04d69781-002f-4961-9363-2e0464226bfa.jpeg?raw=true' },
             'sian': { name: 'RYU SIAN (류시안)', role: 'Center', birth: '2004. 02. 14', height: '180cm', mbti: 'ESFP', url: 'https://share.crack.wrtn.ai/951lot', msg: '"언제나 가장 빛나는 별처럼, 여러분의 곁에서 반짝일게요."', img: 'https://github.com/bella1-cyber/bella/blob/main/fd821b73-1a1c-42d4-b4d2-418ed491bfdd.jpeg?raw=true' },
             'hajun_tri': { name: 'MIN HAJUN (민하준)', role: 'Vocal', birth: '2003. 10. 04', height: '178cm', mbti: 'INFJ', url: 'https://share.crack.wrtn.ai/951lot', msg: '"지친 마음에 위로가 되는 목소리, 진심을 담아 노래하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/894ec6b2-18e1-41b9-b185-67f40d496824.jpeg?raw=true' },
@@ -500,27 +628,59 @@
             'seoyun': { name: 'LEE SEOYUN (이서윤)', role: 'Vocal', birth: '2006. 06. 06', height: '176cm', mbti: 'ISFP', url: 'https://share.crack.wrtn.ai/951lot', msg: '"막내의 반전 매력! 형들은 제가 지키겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/44716e91-94cf-4c2c-aa52-d6be4df6d642.jpeg?raw=true' },
             'kain': { name: 'SHIN KAIN (신카인)', role: 'Vocal', birth: '2003. 12. 12', height: '185cm', mbti: 'ESTP', url: 'https://share.crack.wrtn.ai/951lot', msg: '"여러분의 일상에 잊지 못할 설렘을 선물하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/5ed4d387-a9d8-4628-953d-eaee1d8bb2f2.jpeg?raw=true' },
 
-            // Midnight Blue (UNSAFE / SAFE 적용)
-            'siu': { name: 'KWON SIU (권시우)', role: 'Synth', birth: '2003. 09. 05', height: '184cm', mbti: 'ISFJ', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/nv55ln', msg: '"새벽의 공기를 닮은 사운드로 여러분을 초대합니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/f37d5d49-e906-4dc6-9b00-367469cb49b5.jpeg?raw=true' },
-            'ihyun': { name: 'CHA IHYUN (차이현)', role: 'Bass', birth: '2005. 11. 11', height: '185cm', mbti: 'ISTP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/nv55ln', msg: '"심장을 울리는 베이스처럼, 깊이 있는 음악을 하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/2e1b424b-bad3-4975-8e4c-6271bd424945.jpeg?raw=true' },
-            'juwon': { name: 'SEO JUWON (서주원)', role: 'Guitar', birth: '2005. 04. 08', height: '187cm', mbti: 'ENFP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/nv55ln', msg: '"말로는 전할 수 없는 감정들, 기타 선율에 담아 보냅니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/ea00be77-2d83-4a6c-9425-4f896c108a84.jpeg?raw=true' },
-            'sua': { name: 'LIM SUA (임수아)', role: 'Keys', birth: '2006. 10. 10', height: '164cm', mbti: 'ESFJ', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/nv55ln', msg: '"건반 위에서 춤추는 선율로 여러분을 위로할게요."', img: 'https://github.com/bella1-cyber/bella/blob/main/4918a27d-049b-46e0-91be-41764b5f2b48.jpeg?raw=true' },
-            'glitch': { name: 'GLiTCH', role: 'Drum', birth: '2006. 03. 02', height: '183cm', mbti: 'INFP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/nv55ln', msg: '"가장 솔직하고 거침없는 비트로 소통하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/37e8451f-0119-4716-98d1-5235af6fc77f.jpeg?raw=true' },
+            // Midnight Blue (UNSAFE / SAFE)
+            'siu': { name: 'KWON SIU (권시우)', role: 'Synth', birth: '2003. 09. 05', height: '184cm', mbti: 'ISFJ', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/sessjp', msg: '"새벽의 공기를 닮은 사운드로 여러분을 초대합니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/f37d5d49-e906-4dc6-9b00-367469cb49b5.jpeg?raw=true' },
+            'ihyun': { name: 'CHA IHYUN (차이현)', role: 'Bass', birth: '2005. 11. 11', height: '185cm', mbti: 'ISTP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/sessjp', msg: '"심장을 울리는 베이스처럼, 깊이 있는 음악을 하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/2e1b424b-bad3-4975-8e4c-6271bd424945.jpeg?raw=true' },
+            'juwon': { name: 'SEO JUWON (서주원)', role: 'Guitar', birth: '2005. 04. 08', height: '187cm', mbti: 'ENFP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/sessjp', msg: '"말로는 전할 수 없는 감정들, 기타 선율에 담아 보냅니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/ea00be77-2d83-4a6c-9425-4f896c108a84.jpeg?raw=true' },
+            'sua': { name: 'LIM SUA (임수아)', role: 'Keys', birth: '2006. 10. 10', height: '164cm', mbti: 'ESFJ', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/sessjp', msg: '"건반 위에서 춤추는 선율로 여러분을 위로할게요."', img: 'https://github.com/bella1-cyber/bella/blob/main/4918a27d-049b-46e0-91be-41764b5f2b48.jpeg?raw=true' },
+            'glitch': { name: 'GLiTCH', role: 'Drum', birth: '2006. 03. 02', height: '183cm', mbti: 'INFP', url_unsafe: 'https://share.crack.wrtn.ai/sessjp', url_safe: 'https://share.crack.wrtn.ai/sessjp', msg: '"가장 솔직하고 거침없는 비트로 소통하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/37e8451f-0119-4716-98d1-5235af6fc77f.jpeg?raw=true' },
 
-            // TRAINEES (일부 UNSAFE / SAFE 적용)
-            'chaeun': { name: 'YU CHAEUN (유채운)', role: 'Trainee', birth: '2004. 11. 03', height: '174cm', mbti: 'INFJ', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/9r8wr2', msg: '"연습실에서 흘린 땀방울은 배신하지 않는다는 걸 보여주겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/4ab4e01a-482f-4185-87b8-45bdd31bfc8a%20(1).jpeg?raw=true' },
-            'seojun': { name: 'HAN SEOJUN (한서준)', role: 'Trainee', birth: '2005. 07. 21', height: '183cm', mbti: 'ISTP', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/9r8wr2', msg: '"무대 위에서 죽을 각오로 임하겠습니다. 지켜봐 주세요."', img: 'https://github.com/bella1-cyber/bella/blob/main/d7d76d4f-b7a3-40db-a4e9-1f69b236d77b.jpeg?raw=true' },
-            'aiden': { name: 'AIDEN (에이든)', role: 'Trainee', birth: '2006. 03. 14', height: '182cm', mbti: 'ENTJ', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/9r8wr2', msg: '"K-POP의 새로운 흐름(Flow), 제가 만들어 가겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/c797938e-b54e-4f25-9dcb-4778adca5c92.jpeg?raw=true' },
-            // 나머지 연습생은 일반 url 사용
+            // TRAINEES
+            'chaeun': { name: 'YU CHAEUN (유채운)', role: 'Trainee', birth: '2004. 11. 03', height: '174cm', mbti: 'INFJ', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/a63m4j', msg: '"연습실에서 흘린 땀방울은 배신하지 않는다는 걸 보여주겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/4ab4e01a-482f-4185-87b8-45bdd31bfc8a%20(1).jpeg?raw=true' },
+            'seojun': { name: 'HAN SEOJUN (한서준)', role: 'Trainee', birth: '2005. 07. 21', height: '183cm', mbti: 'ISTP', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/a63m4j', msg: '"무대 위에서 죽을 각오로 임하겠습니다. 지켜봐 주세요."', img: 'https://github.com/bella1-cyber/bella/blob/main/d7d76d4f-b7a3-40db-a4e9-1f69b236d77b.jpeg?raw=true' },
+            'aiden': { name: 'AIDEN (에이든)', role: 'Trainee', birth: '2006. 03. 14', height: '182cm', mbti: 'ENTJ', url_unsafe: 'https://share.crack.wrtn.ai/a63m4j', url_safe: 'https://share.crack.wrtn.ai/a63m4j', msg: '"K-POP의 새로운 흐름(Flow), 제가 만들어 가겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/c797938e-b54e-4f25-9dcb-4778adca5c92.jpeg?raw=true' },
             'chaeihyun': { name: 'CHAE IHYUN (채이현)', role: 'Trainee', birth: '2004. 01. 19', height: '168cm', mbti: 'INTJ', url: 'https://share.crack.wrtn.ai/vypn1l', msg: '"우아함 속에 숨겨진 강인함으로, 반드시 데뷔하겠습니다."', img: 'https://github.com/bella1-cyber/bella/blob/main/c2e4078c-94b3-4413-957b-a9942af841df.jpeg?raw=true' },
             'ella': { name: 'ELLA JUNG (엘라 정)', role: 'Trainee', birth: '2004. 08. 08', height: '172cm', mbti: 'ENFP', url: 'https://share.crack.wrtn.ai/vypn1l', msg: '"Enjoy the Show! 여러분도 저와 함께 즐겨주실 거죠?"', img: 'https://github.com/bella1-cyber/bella/blob/main/35e5c942-c890-4d1e-bebd-8ceb6c0b149d.jpeg?raw=true' },
             'seah': { name: 'KIM SEAH (김세아)', role: 'Trainee', birth: '2005. 04. 15', height: '162cm', mbti: 'ISFJ', url: 'https://share.crack.wrtn.ai/vypn1l', msg: '"거북이처럼 느려도, 끝까지 포기하지 않고 완주하겠습니다!"', img: 'https://github.com/bella1-cyber/bella/blob/main/9cd1dacc-659d-45fa-8868-71e991855e0f.jpeg?raw=true' }
         };
 
-        // --- [3] 상세 프로필 모달 열기 (자동 감지 로직 적용) ---
+        // --- [2-2] 앨범 데이터베이스 ---
+        const albumDB = {
+            'na_1st': {
+                title: 'The Beginning', artist: 'N/A', cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&w=500&q=80',
+                tracks: [
+                    { title: 'Intro: New Era', lyrics: '(Instrumental)' },
+                    { title: 'Spotlight (Title)', lyrics: "Yeah, we are N/A\n세상이 우릴 주목해\n\n(Verse 1)\n어둠 속에서 피어난 빛\n우린 멈추지 않아 Never quit\n심장이 뛰는 소릴 들어봐\n지금 이 순간 We take the top\n\n(Chorus)\nSpotlight, 비춰줘 나를 더\nSpotlight, 이 무대 위에서\n우린 전설이 될 거야\nWatch us now, N/A is here" },
+                    { title: 'Dreamer', lyrics: "꿈을 꾸던 작은 아이\n이제는 날개를 펼쳐..." }
+                ]
+            },
+            'eon_1st': {
+                title: 'Blue Moon', artist: 'EON', cover: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-4.0.3&w=500&q=80',
+                tracks: [
+                    { title: 'Blue Moon (Title)', lyrics: "차가운 밤공기 속에\n떠오른 푸른 달빛\n\n너를 그리며 부르는 노래\n들리니 my love..." },
+                    { title: 'Gravity', lyrics: "벗어날 수 없어\n네 중력 안에 갇혀버린 나..." }
+                ]
+            },
+            'triga_1st': {
+                title: 'Trigger Warning', artist: 'TRIGAЯ', cover: 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?ixlib=rb-4.0.3&w=500&q=80',
+                tracks: [
+                    { title: 'BANG! (Title)', lyrics: "Pull the trigger, Bang!\n우린 겨누지 않아도 명중해\n\n(Rap)\n거침없이 쏴버려 Hater들의 말\n신경 꺼 우린 우리 길을 가" },
+                    { title: 'Reload', lyrics: "다시 장전해\n끝날 때까지 끝난 게 아냐..." }
+                ]
+            },
+            'mid_1st': {
+                title: 'Night Drive', artist: 'Midnight Blue', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&w=500&q=80',
+                tracks: [
+                    { title: 'Highway (Title)', lyrics: "끝없이 펼쳐진 도로 위\n너와 나 단둘이\n\n(Chorus)\nRun away, far away\n도시의 불빛을 뒤로하고..." },
+                    { title: 'City Lights', lyrics: "잠들지 않는 도시의 밤\n수많은 별들보다 빛나는 너..." }
+                ]
+            }
+        };
+
+        // --- [3] 상세 프로필 모달 열기 ---
         function openModal(id) {
             const data = artistDB[id];
-            if(!data) { console.log("데이터 없음: " + id); return; }
+            if(!data) return;
 
             document.getElementById('modalImg').src = data.img;
             document.getElementById('modalName').innerText = data.name;
@@ -530,26 +690,23 @@
             document.getElementById('modalMbti').innerText = data.mbti;
             document.getElementById('modalMsg').innerText = data.msg;
             
-            // [중요] 버튼 자동 감지 로직
             const singleBtn = document.getElementById('modalLink');
             const dualBtnBox = document.getElementById('dualBtnBox');
 
-            // 1. 만약 url_unsafe가 있다면? -> 두 개 버튼 보여주기 (Dual)
+            // 1. UNSAFE / SAFE 두 개인 경우
             if (data.url_unsafe) {
-                singleBtn.style.display = 'none'; // 기존 버튼 숨김
-                dualBtnBox.style.display = 'flex'; // 두 개 버튼 보임
-                
+                singleBtn.style.display = 'none';
+                dualBtnBox.style.display = 'flex';
                 document.getElementById('btnUnsafe').href = data.url_unsafe;
                 document.getElementById('btnSafe').href = data.url_safe;
             } 
-            // 2. 아니라면? -> 붉은색 UNSAFE 버튼 하나만 보여주기 (Single)
+            // 2. UNSAFE 하나만 있는 경우 (나머지 멤버)
             else {
                 singleBtn.style.display = 'inline-block';
                 dualBtnBox.style.display = 'none';
-                
                 singleBtn.href = data.url;
-                singleBtn.innerText = "UNSAFE ↗"; // 텍스트 변경
-                singleBtn.className = "btn-unsafe"; // 스타일 변경 (붉은색)
+                singleBtn.innerText = "UNSAFE ↗"; 
+                singleBtn.className = "btn-unsafe"; // 붉은색 버튼 스타일 적용
             }
 
             const modal = document.getElementById('artistModal');
@@ -557,13 +714,38 @@
             setTimeout(() => { modal.classList.add('active'); }, 10);
         }
 
-        function closeModal() {
-            const modal = document.getElementById('artistModal');
+        // --- [3-2] 앨범 모달 열기 ---
+        function openAlbum(id) {
+            const data = albumDB[id];
+            if(!data) return;
+
+            document.getElementById('albumCoverImg').src = data.cover;
+            document.getElementById('albumTitleDisplay').innerText = data.title;
+            document.getElementById('albumArtistDisplay').innerText = data.artist;
+
+            let lyricsHTML = "";
+            data.tracks.forEach((track, index) => {
+                lyricsHTML += `
+                    <div class="track-box">
+                        <div class="track-title">${index + 1}. ${track.title}</div>
+                        <div class="lyrics-text">${track.lyrics}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('lyricsContainer').innerHTML = lyricsHTML;
+
+            const modal = document.getElementById('albumModal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+        }
+
+        // --- [4] 공통 모달 닫기 ---
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
             modal.classList.remove('active');
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // --- [4] 오디션 지원 모달 열기 ---
         function openAudition() {
             const modal = document.getElementById('auditionModal');
             modal.style.display = 'flex';
@@ -571,17 +753,15 @@
         }
 
         function closeAudition() {
-            const modal = document.getElementById('auditionModal');
-            modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            closeModal('auditionModal');
         }
 
         // 배경 클릭 시 모달 닫기
         window.onclick = function(event) {
-            const modal1 = document.getElementById('artistModal');
-            const modal2 = document.getElementById('auditionModal');
-            if (event.target == modal1) closeModal();
-            if (event.target == modal2) closeAudition();
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.classList.remove('active');
+                setTimeout(() => { event.target.style.display = 'none'; }, 300);
+            }
         }
     </script>
 </body>

@@ -7,6 +7,12 @@
     <!-- 폰트: 구글 폰트 (Noto Sans KR) -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* --- [추가됨] 스크롤 부드럽게 & 메뉴바에 가려짐 방지 --- */
+        html {
+            scroll-behavior: smooth; /* 부드러운 이동 */
+            scroll-padding-top: 100px; /* 메뉴바 높이만큼 띄우고 이동 */
+        }
+
         /* --- 기본 설정 --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -25,14 +31,39 @@
             top: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9); /* 가독성을 위해 배경을 좀 더 진하게 */
             backdrop-filter: blur(10px);
             z-index: 1000;
+            border-bottom: 1px solid #222;
         }
-        .logo { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; }
+        .logo { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; cursor: pointer;}
         .menu { display: flex; gap: 30px; }
         .menu a { font-size: 14px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .menu a:hover { opacity: 1; color: #ff3366; }
+
+        /* --- [추가됨] 뮤직 플레이어 스타일 --- */
+        .music-player-widget {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff3366;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex; align-items: center; gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+            transition: 0.3s;
+        }
+        .music-player-widget:hover { background: #ff3366; color: white; }
+        
+        .disk-icon { font-size: 20px; animation: spin 3s linear infinite; animation-play-state: paused; }
+        .play-text { font-size: 14px; font-weight: bold; }
+        
+        /* 음악 재생 시 빙글빙글 도는 애니메이션 */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .playing .disk-icon { animation-play-state: running; }
+
 
         /* --- 1. 메인 히어로 섹션 --- */
         header {
@@ -140,8 +171,21 @@
 </head>
 <body>
 
+    <!-- [추가됨] 오디오 태그 (화면엔 안보임) -->
+    <!-- 무료 음원 예시입니다. 원하시는 mp3 주소가 있으면 src 부분을 바꾸세요 -->
+    <audio id="bgm" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- [추가됨] 뮤직 플레이어 버튼 -->
+    <div class="music-player-widget" onclick="toggleMusic()" id="musicPlayer">
+        <div class="disk-icon">💿</div>
+        <div class="play-text" id="playText">PLAY BGM</div>
+    </div>
+
     <nav>
-        <div class="logo">ARTIX</div>
+        <!-- 로고 클릭시 맨 위로 -->
+        <div class="logo" onclick="window.scrollTo(0,0)">ARTIX</div>
         <div class="menu">
             <a href="#company">COMPANY</a>
             <a href="#artists">ARTISTS</a>
@@ -355,44 +399,4 @@
                 <!-- 여성 연습생 -->
                 <div class="artist-card">
                     <img src="https://github.com/bella1-cyber/bella/blob/main/c2e4078c-94b3-4413-957b-a9942af841df.jpeg?raw=true" alt="채이현">
-                    <div class="info-box">
-                        <div class="member-name">채이현<span class="member-age">(22)</span></div>
-                        <span class="trainee-badge">Trainee</span>
-                    </div>
-                </div>
-                <div class="artist-card">
-                    <img src="https://github.com/bella1-cyber/bella/blob/main/35e5c942-c890-4d1e-bebd-8ceb6c0b149d.jpeg?raw=true" alt="엘라 정">
-                    <div class="info-box">
-                        <div class="member-name">엘라 정<span class="member-age">(22)</span></div>
-                        <span class="trainee-badge">Trainee</span>
-                    </div>
-                </div>
-                <div class="artist-card">
-                    <img src="https://github.com/bella1-cyber/bella/blob/main/9cd1dacc-659d-45fa-8868-71e991855e0f.jpeg?raw=true" alt="김세아">
-                    <div class="info-box">
-                        <div class="member-name">김세아<span class="member-age">(20)</span></div>
-                        <span class="trainee-badge">Trainee</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-    <section id="audition">
-        <h2 class="section-title">Audition</h2>
-        <div class="audition-box">
-            <h3>GLOBAL AUDITION 2026</h3>
-            <p>지원분야: 보컬 / 댄스 / 랩 / 악기</p>
-            <br>
-            <p>꿈을 향한 첫 걸음, ARTIX가 함께합니다.</p>
-            <button class="apply-btn">지원하기</button>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 ARTIX ENTERTAINMENT.</p>
-    </footer>
-
-</body>
-</html>
+                    <div class="i

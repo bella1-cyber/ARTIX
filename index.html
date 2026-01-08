@@ -503,14 +503,25 @@
             <div class="audition-form-box">
                 <h2 style="margin-bottom: 20px; color:#ff3366;">APPLY NOW</h2>
                 <p style="margin-bottom: 20px; font-size: 14px; color:#aaa;">꿈을 향한 도전, ARTIX가 응원합니다.</p>
-                <form onsubmit="alert('지원해 주셔서 감사합니다!\n꼼꼼히 검토 후 합격자에 한해 개별 연락 드리겠습니다.'); closeModal('auditionModal'); return false;">
-                    <input type="text" class="form-input" placeholder="이름 (Name)" required>
+                <!-- [수정] submitAudition 함수 실행 -->
+                <form onsubmit="submitAudition(event)">
+                    <input type="text" id="applicantName" class="form-input" placeholder="이름 (Name)" required>
                     <input type="email" class="form-input" placeholder="이메일 (Email)" required>
                     <input type="text" class="form-input" placeholder="연락처 (Phone)" required>
                     <input type="text" class="form-input" placeholder="지원분야 (Vocal/Dance/Rap)" required>
-                    <button type="submit" class="form-btn">제출하기 (SUBMIT)</button>
+                    <button type="submit" class="form-btn">제출 및 심사 결과 확인 (SUBMIT)</button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- [NEW] 오디션 결과 발표 모달 -->
+    <div class="modal-overlay" id="auditionResultModal">
+        <div class="modal-content" style="max-width: 450px; text-align: center; flex-direction: column; padding: 50px 30px;">
+            <div id="resultIcon" style="font-size: 60px; margin-bottom: 20px;"></div>
+            <h2 id="resultTitle" style="font-size: 32px; font-weight: 900; margin-bottom: 20px; text-transform: uppercase;"></h2>
+            <div id="resultMessage" style="color: #ccc; font-size: 15px; line-height: 1.8; margin-bottom: 30px;"></div>
+            <button class="goods-btn" onclick="closeModal('auditionResultModal')" style="border-radius: 30px;">CONFIRM</button>
         </div>
     </div>
 
@@ -1996,6 +2007,59 @@ Gotcha.`
                 event.target.classList.remove('active');
                 setTimeout(() => { event.target.style.display = 'none'; }, 300);
             }
+        }
+
+        // --- [NEW] 오디션 랜덤 결과 로직 (합격 30%, 불합격 70%) ---
+        function submitAudition(event) {
+            event.preventDefault(); // 페이지 새로고침 막기
+
+            // 1. 입력한 이름 가져오기
+            const nameInput = document.getElementById('applicantName');
+            const name = nameInput.value;
+
+            // 2. 오디션 폼 닫기
+            closeModal('auditionModal');
+
+            // 3. 랜덤 확률 계산 (0.0 ~ 1.0 사이 난수 생성)
+            // 0.3 보다 작으면 합격 (30%), 아니면 불합격 (70%)
+            const isPass = Math.random() < 0.3; 
+
+            const resultModal = document.getElementById('auditionResultModal');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+
+            if (isPass) {
+                // [합격 시 디자인]
+                icon.innerHTML = "🎉";
+                title.innerHTML = "<span style='color:#00ff99; text-shadow:0 0 20px #00ff99;'>CONGRATULATIONS!</span>";
+                msg.innerHTML = `
+                    축하합니다, <strong>${name}</strong>님!<br>
+                    ARTIX 글로벌 오디션 1차 서류 심사에<br>
+                    <strong style='color:#00ff99; font-size:18px;'>[최종 합격]</strong> 하셨습니다.<br><br>
+                    당신의 재능은 우리와 함께할 준비가 되었습니다.<br>
+                    2차 실물 오디션 일정은 메일로 발송됩니다.
+                `;
+            } else {
+                // [불합격 시 디자인]
+                icon.innerHTML = "🙏";
+                title.innerHTML = "<span style='color:#ff3366; text-shadow:0 0 20px #ff3366;'>WE ARE SORRY</span>";
+                msg.innerHTML = `
+                    안녕하세요, <strong>${name}</strong>님.<br>
+                    ARTIX 글로벌 오디션에 지원해 주셔서 감사합니다.<br><br>
+                    아쉽게도 엄격한 내부 심사 결과,<br>
+                    이번 시즌에는 <strong style='color:#ff3366;'>[불합격]</strong> 하셨습니다.<br><br>
+                    보여주신 열정에 감사드리며,<br>
+                    앞으로의 꿈을 진심으로 응원하겠습니다.
+                `;
+            }
+
+            // 4. 결과 모달 띄우기
+            resultModal.style.display = 'flex';
+            setTimeout(() => { resultModal.classList.add('active'); }, 100);
+
+            // 5. 폼 초기화
+            event.target.reset();
         }
     </script>
 </body>

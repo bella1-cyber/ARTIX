@@ -1,4 +1,4 @@
-Put your HTML text here<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -149,7 +149,7 @@ Put your HTML text here<!DOCTYPE html>
         }
         .album-cover-box {
             position: relative; width: 100%; aspect-ratio: 1/1;
-            background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: transparent; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.5s; z-index: 2;
         }
         .album-cover-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -284,6 +284,8 @@ Put your HTML text here<!DOCTYPE html>
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
             color: #fff; display: flex; flex-direction: column;
             animation: popIn 0.5s ease-out;
+            /* [수정] 팝업 자체의 최대 높이를 지정하고 넘치지 않게 설정 */
+            max-height: 80vh; 
         }
 
         /* 팝업 1: 사과문 (왼쪽) */
@@ -295,11 +297,17 @@ Put your HTML text here<!DOCTYPE html>
             background: #222; padding: 10px 15px;
             display: flex; justify-content: space-between; align-items: center;
             font-size: 14px; font-weight: bold; border-bottom: 1px solid #333;
+            flex-shrink: 0; /* 헤더는 줄어들지 않게 고정 */
         }
         .popup-close-btn { cursor: pointer; color: #aaa; font-weight: normal; }
         .popup-close-btn:hover { color: #fff; }
         
-        .popup-content { padding: 20px; text-align: left; }
+        .popup-content { 
+            padding: 20px; text-align: left; 
+            /* [수정] 내용이 길면 스크롤 생기도록 설정 */
+            overflow-y: auto; 
+            max-height: 60vh; /* PC에서도 너무 길어지지 않게 */
+        }
         
         /* 사과문 스타일 */
         .apology-text { font-size: 13px; color: #ccc; line-height: 1.8; white-space: pre-wrap; margin-bottom: 10px; }
@@ -340,22 +348,35 @@ Put your HTML text here<!DOCTYPE html>
             .album-art-view { height: 300px; }
 
             /* 팝업 모바일 대응: 세로로 쌓기 */
-            .popup-window { position: relative; width: 90%; margin: 10px auto; top: auto; left: auto; right: auto; pointer-events: auto; }
+            .popup-window { 
+                position: relative; width: 90%; margin: 0 auto 20px; 
+                top: auto; left: auto; right: auto; pointer-events: auto; 
+                /* [수정] 모바일에서 높이 제한 */
+                max-height: 70vh;
+            }
             .main-popup-layer { 
                 position: fixed; top: 0; left: 0; width: 100%; height: 100%;
                 background: rgba(0,0,0,0.7); /* 배경 어둡게 */
-                flex-direction: column; overflow-y: auto; padding-top: 120px;
+                flex-direction: column; overflow-y: auto; 
+                /* [수정] 패딩을 줄여서 팝업이 더 위쪽부터 시작하게 함 */
+                padding-top: 80px; 
+                padding-bottom: 50px;
                 pointer-events: auto;
+                justify-content: flex-start; /* 위에서부터 정렬 */
+            }
+            /* 모바일에서 팝업 내용 스크롤 */
+            .popup-content {
+                max-height: 50vh; /* 화면의 절반까지만 내용 표시하고 스크롤 */
             }
         }
     </style>
 </head>
 <body>
 
-<!-- [NEW] 메인 팝업 레이어 (페이지 로드 시 뜸) -->
+    <!-- [NEW] 메인 팝업 레이어 (페이지 로드 시 뜸) -->
     <div class="main-popup-layer" id="mainPopupLayer">
         
-        <!-- 팝업 1: 사과문 (왼쪽) - 텍스트 업데이트 됨 -->
+        <!-- 팝업 1: 사과문 (왼쪽) -->
         <div class="popup-window popup-apology" id="popupApology">
             <div class="popup-header">
                 <span style="color:#aaa;">NOTICE</span>
@@ -388,20 +409,20 @@ Put your HTML text here<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- 팝업 2: 굿즈 판매 (오른쪽) - 클릭 시 준비중 알림 -->
+        <!-- 팝업 2: 굿즈 판매 (오른쪽) -->
         <div class="popup-window popup-goods" id="popupGoods">
             <div class="popup-header">
                 <span style="color:#ff3366;">OFFICIAL STORE</span>
                 <span class="popup-close-btn" onclick="closeMainPopup('popupGoods')">CLOSE &times;</span>
             </div>
             <div class="popup-content">
-                <img src="https://github.com/bella1-cyber/bella/blob/main/845465.png?raw=true" alt="Goods Image" class="goods-img">
+                <!-- 이미지 경로를 실제 저장한 파일명으로 바꿔주세요. 예: goods_2026.png -->
+                <img src="https://github.com/bella1-cyber/bella/blob/main/845465.png?raw=true" alt="2026 Season's Greetings" class="goods-img">
                 <div class="goods-title">2026 SEASON'S GREETINGS</div>
                 <div class="goods-desc">
                     ARTIX ARTISTS 2026 시즌 그리팅 예약 판매 시작!<br>
                     한정판 포토카드 및 스페셜 굿즈를 만나보세요.
                 </div>
-                <!-- 수정된 부분: href="#" 및 onclick 이벤트 추가 -->
                 <a href="#" onclick="alert('현재 2026 시즌 그리팅 상품 준비 중입니다.\n조금만 기다려주세요!'); return false;" class="goods-btn">
                     GO TO SHOP ↗
                 </a>
@@ -768,7 +789,7 @@ Put your HTML text here<!DOCTYPE html>
             'na_1st': {
                 title: 'The Beginning', 
                 artist: 'N/A', 
-                cover: 'https://github.com/bella1-cyber/bella/blob/main/aaa123.png?raw=true',
+                cover: 'https://github.com/bella1-cyber/bella/blob/main/kkkkk1.png?raw=true',
                 tracks: [
                     { 
                         title: 'Intro : Penumbra', 
@@ -1979,4 +2000,3 @@ Gotcha.`
     </script>
 </body>
 </html>
-

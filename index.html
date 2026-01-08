@@ -152,7 +152,7 @@
             background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.5s; z-index: 2;
         }
-        .album-cover-box img { width: 100%; height: 100%; object-fit: cover; }
+        .album-cover-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
         /* LP판 효과 */
         .vinyl-record {
             position: absolute; top: 5px; right: 5px; bottom: 5px; left: 5px;
@@ -271,25 +271,63 @@
             z-index: 10;
         }
 
-        /* [모바일 대응 - 폰트 겹침 해결] */
+        /* --- [NEW: 메인 팝업 레이어 스타일] --- */
+        .main-popup-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 0; 
+            z-index: 10000; /* 네비게이션보다 높게 */
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        .popup-window {
+            position: absolute; width: 400px;
+            background: #111; border: 1px solid #ff3366;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            color: #fff; display: flex; flex-direction: column;
+            animation: popIn 0.5s ease-out;
+        }
+
+        /* 팝업 1: 사과문 (왼쪽) */
+        .popup-apology { top: 150px; left: 5%; border: 1px solid #555; }
+        /* 팝업 2: 굿즈 판매 (오른쪽) */
+        .popup-goods { top: 150px; right: 5%; border: 1px solid #ff3366; }
+
+        .popup-header {
+            background: #222; padding: 10px 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 14px; font-weight: bold; border-bottom: 1px solid #333;
+        }
+        .popup-close-btn { cursor: pointer; color: #aaa; font-weight: normal; }
+        .popup-close-btn:hover { color: #fff; }
+        
+        .popup-content { padding: 20px; text-align: left; }
+        
+        /* 사과문 스타일 */
+        .apology-text { font-size: 13px; color: #ccc; line-height: 1.8; white-space: pre-wrap; margin-bottom: 10px; }
+        .apology-footer { text-align: right; font-size: 12px; color: #666; margin-top: 15px; }
+
+        /* 굿즈 스타일 */
+        .goods-img { width: 100%; height: 200px; object-fit: cover; margin-bottom: 15px; background: #333; }
+        .goods-title { font-size: 20px; font-weight: 900; color: #ff3366; margin-bottom: 5px; text-transform: uppercase; }
+        .goods-desc { font-size: 13px; color: #aaa; margin-bottom: 15px; }
+        .goods-btn {
+            display: block; width: 100%; padding: 12px; background: #ff3366;
+            color: #fff; text-align: center; font-weight: bold; text-transform: uppercase;
+            transition: 0.3s; border: none; cursor: pointer;
+        }
+        .goods-btn:hover { background: #fff; color: #ff3366; }
+
+        @keyframes popIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* [모바일 대응 - 폰트 겹침 해결 & 팝업 스택] */
         @media (max-width: 768px) {
             /* 네비게이션 수정 */
-            nav {
-                flex-direction: column; /* 세로 배치 */
-                padding: 15px 20px;     /* 패딩 줄임 */
-                height: auto;
-            }
-            .menu {
-                gap: 20px;              /* 메뉴 사이 간격 */
-                margin-top: 15px;       /* 로고와 메뉴 사이 간격 */
-                flex-wrap: wrap;        /* 줄바꿈 허용 */
-                justify-content: center;
-            }
-            .menu a { font-size: 12px; } /* 글자 크기 살짝 줄임 */
+            nav { flex-direction: column; padding: 15px 20px; height: auto; }
+            .menu { gap: 20px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+            .menu a { font-size: 12px; }
 
             /* 위치 조정 */
-            .marquee-container { top: 100px; } /* 네비게이션이 두꺼워져서 내림 */
-            header { padding-top: 150px; }     /* 헤더 내용도 내림 */
+            .marquee-container { top: 100px; }
+            header { padding-top: 150px; }
             header h1 { font-size: 36px; }
 
             /* 그리드 및 모달 조정 */
@@ -300,10 +338,67 @@
             .album-details-container { flex-direction: column; }
             .album-art-view, .album-lyrics-view { width: 100%; }
             .album-art-view { height: 300px; }
+
+            /* 팝업 모바일 대응: 세로로 쌓기 */
+            .popup-window { position: relative; width: 90%; margin: 10px auto; top: auto; left: auto; right: auto; pointer-events: auto; }
+            .main-popup-layer { 
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.7); /* 배경 어둡게 */
+                flex-direction: column; overflow-y: auto; padding-top: 120px;
+                pointer-events: auto;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- [NEW] 메인 팝업 레이어 (페이지 로드 시 뜸) -->
+    <div class="main-popup-layer" id="mainPopupLayer">
+        
+        <!-- 팝업 1: 사과문 (왼쪽) -->
+        <div class="popup-window popup-apology" id="popupApology">
+            <div class="popup-header">
+                <span style="color:#aaa;">NOTICE</span>
+                <span class="popup-close-btn" onclick="closeMainPopup('popupApology')">CLOSE &times;</span>
+            </div>
+            <div class="popup-content">
+                <h3 style="margin-bottom:15px; color:#fff;">[공지] 아티스트 관련 안내 말씀 드립니다.</h3>
+                <div class="apology-text">
+안녕하세요, 아틱스 엔터테인먼트입니다.
+
+먼저 당사 소속 아티스트 JAY 군과 관련하여 심려를 끼쳐드린 점, 진심으로 고개 숙여 사과드립니다.
+
+현재 온라인상에 유포되고 있는 내용에 대해 당사는 엄중하게 사실관계를 확인 중이며, 팬 여러분께서 걱정하시는 부분이 없도록 최선을 다해 조치하겠습니다.
+
+아티스트 보호와 더불어 성숙한 활동을 위해 더욱 노력하는 아틱스가 되겠습니다. 다시 한번 죄송합니다.
+                </div>
+                <div class="apology-footer">
+                    2026. 01. 08<br>ARTIX ENTERTAINMENT
+                </div>
+            </div>
+        </div>
+
+        <!-- 팝업 2: 굿즈 판매 (오른쪽) -->
+        <div class="popup-window popup-goods" id="popupGoods">
+            <div class="popup-header">
+                <span style="color:#ff3366;">OFFICIAL STORE</span>
+                <span class="popup-close-btn" onclick="closeMainPopup('popupGoods')">CLOSE &times;</span>
+            </div>
+            <div class="popup-content">
+                <img src="https://images.unsplash.com/photo-1594911772125-07fc7a2d8d9f?ixlib=rb-4.0.3&w=400&q=80" alt="Goods Image" class="goods-img">
+                <div class="goods-title">2026 SEASON'S GREETINGS</div>
+                <div class="goods-desc">
+                    ARTIX ARTISTS 2026 시즌 그리팅 예약 판매 시작!<br>
+                    한정판 포토카드 및 스페셜 굿즈를 만나보세요.
+                </div>
+                <a href="https://marpple.shop/kr/" target="_blank" class="goods-btn">
+                    GO TO SHOP ↗
+                </a>
+            </div>
+        </div>
+
+    </div>
+
 
     <!-- 1. 유튜브 플레이어 -->
     <div id="youtube-player" style="position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; z-index: -1;"></div>
@@ -497,7 +592,7 @@
                     <div class="vinyl-record"></div>
                 </div>
                 <div class="album-info">
-                    <div class="album-title">The Beginning</div>
+                    <div class="album-title">Eclipse of souls</div>
                     <div class="album-artist">N/A</div>
                 </div>
             </div>
@@ -505,11 +600,11 @@
             <!-- 앨범 2: EON -->
             <div class="album-card" onclick="openAlbum('eon_1st')">
                 <div class="album-cover-box">
-                    <img src="https://github.com/bella1-cyber/bella/blob/main/kkk12345.jpeg?raw=true" alt="Album Cover">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/aaa456.png?raw=true" alt="Album Cover">
                     <div class="vinyl-record"></div>
                 </div>
                 <div class="album-info">
-                    <div class="album-title">Blue Moon</div>
+                    <div class="album-title">Burnin' Up</div>
                     <div class="album-artist">EON</div>
                 </div>
             </div>
@@ -517,7 +612,7 @@
             <!-- 앨범 3: TRIGAЯ -->
             <div class="album-card" onclick="openAlbum('triga_1st')">
                 <div class="album-cover-box">
-                    <img src="https://github.com/bella1-cyber/bella/blob/main/kkk123.jpeg?raw=true" alt="Album Cover">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/a123.jpeg?raw=true" alt="Album Cover">
                     <div class="vinyl-record"></div>
                 </div>
                 <div class="album-info">
@@ -529,11 +624,11 @@
             <!-- 앨범 4: Midnight Blue -->
             <div class="album-card" onclick="openAlbum('mid_1st')">
                 <div class="album-cover-box">
-                    <img src="https://github.com/bella1-cyber/bella/blob/main/kkk2333.jpeg?raw=true" alt="Album Cover">
+                    <img src="https://github.com/bella1-cyber/bella/blob/main/aaa789.jpeg?raw=true" alt="Album Cover">
                     <div class="vinyl-record"></div>
                 </div>
                 <div class="album-info">
-                    <div class="album-title">Night Drive</div>
+                    <div class="album-title">Noise Cancelling</div>
                     <div class="album-artist">Midnight Blue</div>
                 </div>
             </div>
@@ -571,6 +666,19 @@
 
     <!-- 자바스크립트 -->
     <script>
+        // --- [NEW] 메인 팝업 닫기 함수 ---
+        function closeMainPopup(id) {
+            var popup = document.getElementById(id);
+            popup.style.display = 'none';
+            
+            // 두 팝업이 모두 닫혔는지 확인하여 레이어 숨김 (클릭 방해 방지)
+            var p1 = document.getElementById('popupApology');
+            var p2 = document.getElementById('popupGoods');
+            if (p1.style.display === 'none' && p2.style.display === 'none') {
+                document.getElementById('mainPopupLayer').style.display = 'none';
+            }
+        }
+
         // --- [1] 유튜브 API ---
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -649,7 +757,7 @@
             'na_1st': {
                 title: 'The Beginning', 
                 artist: 'N/A', 
-                cover: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?ixlib=rb-4.0.3&w=500&q=80',
+                cover: 'https://github.com/bella1-cyber/bella/blob/main/aaa123.png?raw=true',
                 tracks: [
                     { 
                         title: 'Intro : Penumbra', 
@@ -1120,24 +1228,653 @@ I love you`
                 ]
             },
             'eon_1st': {
-                title: 'Blue Moon', artist: 'EON', cover: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-4.0.3&w=500&q=80',
+                title: 'Burnin\' Up', 
+                artist: 'EON', 
+                cover: 'https://github.com/bella1-cyber/bella/blob/main/aaa456.png?raw=true',
                 tracks: [
-                    { title: 'Blue Moon (Title)', lyrics: "차가운 밤공기 속에\n떠오른 푸른 달빛\n\n너를 그리며 부르는 노래\n들리니 my love..." },
-                    { title: 'Gravity', lyrics: "벗어날 수 없어\n네 중력 안에 갇혀버린 나..." }
+                    { 
+                        title: 'Burnin\' Up (Title)', 
+                        lyrics: `[Intro]
+Yeah, the last stage
+We burn it all
+
+[Verse 1]
+잿빛 도시의 바닥, 차가운 공기만
+삼킨 꿈은 녹슬고, 비웃음만 남아
+수백 번 넘어지고, 또 수천 번 찢겨도
+가슴 속 작은 불씨, 절대 뺏기진 않아
+
+[Pre-Chorus]
+숨이 턱 끝까지 차올라 와
+세상이 등을 돌려도, We go up!
+마지막 남은 모든 걸 던져봐!
+
+[Chorus]
+Oh, 타올라! 꺼지지 않는 불꽃!
+Oh, 이 밤을! 전부 태울 듯이!
+(Now we're burnin' up, burnin' up, never gonna stop)
+마지막 춤을 춰! 꺼지지 않는 불꽃!
+
+[Verse 2]
+They said "Game Over", 끝났다고 말했지
+But the hero always comes back, 이게 법칙이지
+피, 땀, 눈물로 쓴 우리 서사의 Climax
+이 무대 위에서 증명해, who’s the best!
+
+[Pre-Chorus]
+심장이 재가 되도록 뛰어봐
+세상이 우릴 막아도, We go up!
+마지막 남은 눈물도 태워봐!
+
+[Chorus]
+Oh, 타올라! 꺼지지 않는 불꽃!
+Oh, 이 밤을! 전부 태울 듯이!
+(Now we're burnin' up, burnin' up, never gonna stop)
+마지막 춤을 춰! 꺼지지 않는 불꽃!
+
+[Bridge]
+단 한 줌의 빛이라도... 괜찮아...
+우리가 서로의 불이 되면 돼...
+Now scream!
+
+[Chorus]
+Oh, 타올라! 꺼지지 않는 불꽃! (FLAME IS GETTING HIGHER!)
+Oh, 온몸이! 전부 부서져도!
+Now we're burnin' up, burnin' up, never gonna stop
+마지막 숨을 셔! 꺼지지 않는 불꽃!
+
+[Outro]
+We are... eternal` 
+                    },
+                    { 
+                        title: '빈 방', 
+                        lyrics: `[Intro]
+Another night, yeah
+Just me and my shadow
+
+[Verse 1]
+새벽 네 시 반, 텅 빈 연습실의 공기
+엎질러진 커피 자국, 잠들지 못한 광기
+수백 번 고쳐 쓴 가사, 전부 맘에 안 들어
+거울 속의 나는 어제보다 더 늙어 보여
+
+[Pre-Chorus]
+희미한 모니터 불빛만이 유일한 친구
+성공이란 단어는 이제 너무나도 진부해
+그저 이 목소리가 닿기를 바랄 뿐
+
+[Chorus]
+이 빈 방의 소음이 들리니
+메아리만 돌아오는 이 밤의 멜로디
+Can you hear me now, hear me now, echoing my heart out
+언젠가 세상을 채울까, 빈 방의 소음이
+
+[Verse 2]
+꿈을 판다는 건 영혼을 깎는 일
+매일 밤 내 심장을 갉아 먹는 DEBT
+아무도 듣지 않는 노래를 부르는 일
+그게 내 일, 이게 내 길, But still, I feel...
+창밖의 도시는 불빛에 취해 잠들어
+나만 홀로 깨어있는 섬이 된 것 같아
+
+[Pre-Chorus]
+헤드폰 너머엔 내가 만든 작은 우주
+근데 왜 이리도 외로운지, 난 모르겠어
+제발 이 목소리가 닿기를 바랄 뿐
+
+[Chorus]
+이 빈 방의 소음이 들리니
+메아리만 돌아오는 이 밤의 멜로디
+Can you hear me now, hear me now, echoing my heart out
+언젠가 세상을 채울까, 빈 방의 소음이
+
+[Bridge]
+포기란 두 글자, 턱 끝까지 차올랐다 지워내...
+아니, 이건 소음이 아냐...
+내 상처가 빚어낸... 서툰 노래야...
+그러니 제발 들어줘...
+
+[Final Chorus]
+이 빈 방의 노래가 들리니!
+세상 끝에 울려 퍼질 나의 멜로디!
+Can you hear me now, hear me now, screaming my whole heart out!
+마침내 세상을 채울 거야, 내 모든 소음이!
+
+[Expanded Outro]
+언젠가는...
+들려줄게...` 
+                    },
+                    { 
+                        title: 'SHOCKWAVE', 
+                        lyrics: `[Intro]
+Yeah, the silence is over
+Step back, feel the shockwave. Let's go
+
+[Verse 1]
+고요했던 이 street, 지루했던 이 scene
+우리가 없는 동안, 꽤나 심심했겠지
+잠자던 심장을 깨워, 엔진을 다시 점화해
+낡은 규칙 따윈 찢어, 새로운 판을 시작해
+
+[Pre-Chorus]
+점점 더 뜨거워져, 엔진이 과열돼
+아드레날린이 터져, 한계치를 넘어서
+3, 2, 1, 모두 비켜! 
+거대한 파동이 밀려와
+
+[Chorus]
+온 세상을 뒤흔들어, SHOCKWAVE!
+모두 다 비켜, 우리가 가는 길 위에
+Get out of my way!
+We go boom boom boom, 네 심장을 겨눌게
+
+[Long Rap Verse - Rapper 1 & Rapper 2]
+(Yeah) Bumper to bumper, 막힌 길을 뚫어
+우리가 뜨면 traffic jam, a beautiful trouble
+시끄러운 경적 소리, 그건 우리를 위한 fanfare
+이 바닥의 주인공은 우리, nobody can't compare
+(Yo, hit 'em) 판을 뒤집어, a new generation
+과거의 데이터는 전부 burn, no hesitation
+새로운 법칙을 새겨, a different level
+우리가 가는 길이 곧 길이니, no need a map or manual
+
+[Pre-Chorus]
+점점 더 뜨거워져, 엔진이 과열돼
+아드레날린이 터져, 한계치를 넘어서
+3, 2, 1, 모두 비켜!
+거대한 파동이 밀려와
+
+[Chorus]
+온 세상을 뒤흔들어, SHOCKWAVE!
+모두 다 비켜, 우리가 가는 길 위에
+Get out of my way!
+We go boom boom boom, 네 심장을 겨눌게
+
+[Bridge]
+이 모든 소음의 중심엔
+단 하나의 이유, 바로 너
+네가 우릴 다시 일으켰으니
+이제 우리가 세상을 너에게 줄게
+
+[Chorus]
+온 세상을 뒤흔들어, SHOCKWAVE!
+모두 다 비켜, 우리가 가는 길 위에
+Get out of my way!
+이 모든 소음의 끝은 바로 너! You're the one!
+We go boom boom boom! 네 심장을 겨눌게!
+
+[Outro]
+It's just the beginning.` 
+                    },
+                    { 
+                        title: '별의 항해', 
+                        lyrics: `[Verse 1]
+길을 잃었던 밤, 끝없는 어둠 속
+모두가 내게서 등을 돌리고
+홀로 남겨졌다고, 다 끝이라고 믿던
+그 순간, 널 발견했어
+
+[Pre-Chorus]
+작지만 누구보다 밝게 빛나던
+나를 향해 깜빡이던 너라는 별 하나
+그 빛을 따라 다시 노를 저어
+
+[Chorus]
+나의 별의 항해, 그 길을 비춰준 너
+망망대해 같던 내 삶의 유일한 좌표
+(You're my star, my light, my guide through the night)
+폭풍이 몰아쳐도, 이젠 두렵지 않아, 별의 항해
+
+[Verse 2]
+때론 너의 빛이 흐려질 때면
+내가 더 큰 목소리로 노래할게
+네가 길을 잃지 않게, 지치지 않게
+이제 내가 너의 밤을 지켜줄게
+
+[Pre-Chorus]
+세상이란 거친 파도가 덮쳐와도
+서로의 손을 잡고 있다면 괜찮아
+다시 한번 돛을 올려
+
+[Chorus]
+나의 별의 항해, 그 길을 비춰준 너
+망망대해 같던 내 삶의 유일한 좌표
+(You're my star, my light, my guide through the night)
+폭풍이 몰아쳐도, 이젠 두렵지 않아, 별의 항해
+
+[Bridge]
+수많은 별들 중에, 왜 하필 나였을까
+초라한 내 배에, 왜 네 빛을 나눠줬을까...
+그 대답을 내 평생, 노래로 할게...
+
+[Climax Chorus]
+우리의 별의 항해, 그 끝은 서로이길!
+칠흑 같던 내 삶을 채워준 너란 은하수!
+(You're my star, my light, my guide through the night!)
+세상이 끝난대도, 너와 함께 갈 거야, 별의 항해!
+
+[Outro]
+My star sailor...` 
+                    },
+                    { 
+                        title: 'Last Scene', 
+                        lyrics: `[Intro]
+Haha, you ready for the show?
+Action!
+
+[Verse 1]
+구겨진 수트, 먼지 쌓인 구두
+괜찮아, 스포트라이트 아래선 다 빛나, Voodoo
+내일은 없어, 오늘에 전부 All-in
+슬픈 표정은 No, No, 우린 프로페셔널이지
+
+[Pre-Chorus]
+대본의 마지막 페이지, 엔딩 크레딧이 보여
+하지만 웃어야지, 모두가 우릴 보잖아!
+So let's start the show!
+
+[Chorus]
+이게 우리의 마지막 SCENE!
+가장 화려한 거짓말로
+(Show must go on, yeah, the show must go on)
+눈물 따윈 없어, 완벽한 마지막 SCENE!
+
+[Verse 2]
+텅 빈 객석? 아니, 별들이 꽉 찼네
+우릴 비추는 조명이라고 생각할래
+감독님은 없어, 우리가 Director
+NG는 못 참지, 완벽해야 해 이 Chapter
+
+[Pre-Chorus]
+컷 사인은 없어, 심장이 멈출 때까지
+울고 싶어도 웃어, 카메라가 돌고 있잖아!
+One more take, let's go!
+
+[Chorus]
+이게 우리의 마지막 SCENE!
+가장 화려한 거짓말로
+(Show must go on, yeah, the show must go on)
+눈물 따윈 없어, 완벽한 마지막 SCENE!
+
+[Bridge]
+불이 꺼지고... 막이 내리면...
+우린 그냥... 아무도 아닌 게 될까...
+...아냐, 아직 아냐.
+
+[Chorus]
+이게 우리의 마지막 SCENE! (A BRILLIANT SCENE!)
+세상 가장 슬픈 코미디로!
+(Show must go on, yeah, the show must go on!)
+울면서 웃는 거야, 찬란한 마지막 SCENE!
+
+[Outro]
+And... cut!` 
+                    }
                 ]
             },
             'triga_1st': {
-                title: 'Trigger Warning', artist: 'TRIGAЯ', cover: 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?ixlib=rb-4.0.3&w=500&q=80',
+                title: 'Trigger Warning', 
+                artist: 'TRIGAЯ', 
+                cover: 'https://github.com/bella1-cyber/bella/blob/main/a123.jpeg?raw=true',
                 tracks: [
-                    { title: 'BANG! (Title)', lyrics: "Pull the trigger, Bang!\n우린 겨누지 않아도 명중해\n\n(Rap)\n거침없이 쏴버려 Hater들의 말\n신경 꺼 우린 우리 길을 가" },
-                    { title: 'Reload', lyrics: "다시 장전해\n끝날 때까지 끝난 게 아냐..." }
+                    { 
+                        title: 'Love or Ruin (Title)', 
+                        lyrics: `[Intro]
+You are the suspect.
+Don't move.
+Freeze.
+
+[Verse 1]
+흐트러진 호흡, 흔들리는 동공
+좁혀오는 포위망, 넌 이미 독 안에 든 쥐 (Trap)
+범인은 이 안에 있어, 바로 너
+내 심장을 훔친 죄, 그게 너의 Flaw
+완벽한 알리바이? 소용없어
+이미 내 본능이 널 가리켜서
+도망쳐 봐 어디든, 지구 끝까지
+집요하게 파고들어, 네 깊은 곳까지
+
+[Pre-Chorus]
+이성의 끈은 끊어졌어 (Broken)
+위험한 선을 넘어섰어 (Spoken)
+차라리 날 망가뜨려 줘
+이 지독한 추격전을 끝내 줘
+
+[Chorus]
+Love or Ruin, 선택은 하나
+네 운명을 걸어, 거침없이 쏴 (Bang! Bang!)
+벗어날 수 없는 너는 나의 Target
+결말은 정해졌어, No regret
+잡히는 순간 넌 내 것이 돼
+영원히 가둬둘게, In my case.
+
+[Verse 2]
+Uh.
+증거는 충분해, 네 눈빛이 Evidence
+거부할 수 없는 강렬한 Sequence
+마비된 감각, 무너지는 System
+결국 넌 나의 품 안, 나의 Victim
+차가운 수갑처럼 옥죄어 오는
+너라는 감옥에 난 기꺼이 갇히는
+오직 둘만이 아는 은밀한 Deal
+이 밤을 삼켜버려, What you feel?
+
+[Pre-Chorus]
+벼랑 끝에 서 있어, 우린 위험해 (Warning)
+하지만 멈출 수 없어, 이미 Burning
+치명적인 독을 삼킨 채
+난 또다시 네게로 돌진해
+
+[Chorus]
+Love or Ruin, 선택은 하나
+네 운명을 걸어, 거침없이 쏴 (Bang! Bang!)
+벗어날 수 없는 너는 나의 Target
+결말은 정해졌어, No regret
+잡히는 순간 넌 내 것이 돼
+영원히 가둬둘게, In my case.
+
+[Bridge]
+재판은 끝났어.
+남은 건 집행뿐.
+너라는 미로 속에 영원히 갇혀도 좋아
+Pull the trigger, Right now!!
+
+[Chorus]
+(Yeah! Nowhere to hide!)
+Love or Ruin, 넌 나의 Guilty
+심장을 꿰뚫을 단 하나의 Reality (Shot!)
+끝없이 반복되는 우리 둘의 Night
+어둠 속 타오르는 Red light
+마지막 장면을 완성해 줘
+나를 겨눠봐, Just kill me.
+
+[Outro]
+Case closed.
+You're mine.` 
+                    },
+                    { 
+                        title: 'Im The King!', 
+                        lyrics: `[Intro]
+Ha!
+You ready for this?
+Yeah, we back.
+Real deal, no fake.
+
+[Verse 1]
+발소리부터 달라 무게감이 다른 Walking
+어설픈 흉내쟁이들 사이 나는 특별한 Talking
+숨길 수 없는 태, 여유로운 눈빛의 Vibe
+네 심박수를 높여, Check the speedometer, drive!
+순진한 척하지 마, 너도 원하잖아 (I know it)
+위험할수록 더 끌리는 법이니까 (Don't blow it)
+거칠게 다가와도 놀라지는 마
+이건 본능의 영역, 계산 따윈 안 해 난
+
+[Pre-Chorus]
+머릿속을 헤집어 놔 Crazy
+이성의 끈은 이미 Hazy
+더 빨라지는 속도, 멈출 수 없어 No brake
+나를 감당해 봐, It’s not a mistake
+
+[Chorus]
+I’m the REAL THING!
+너를 미치게 할 단 하나의 Answer
+피할 수 없게 더 파고든 Danger
+WATCH ME NOW!
+본 적 없는 색, 압도적인 Scenery
+네 맘을 훔친 난 완벽한 Felony
+다시 한번 말해, I’m the Boss tonight.
+
+[Verse 2]
+Uh, Yeah.
+젠틀한 미소 뒤에 숨겨둔 Wild
+방심한 순간 널 삼켜버릴 Guide
+늑대 같대? 아니 난 그보다 위
+상위 포식자, 먹이사슬의 꼭대기 (Top tier)
+눈치 보지 말고 즐겨, 이 리듬은 내 거
+네 맘대로 날 판단해, I don’t care, whatever
+확실한 건 하나, 넌 내게서 못 벗어나
+이미 중독된 채로 넌 나를 쫓잖아
+
+[Pre-Chorus]
+네 심장이 터질 듯해 Beating
+거짓말은 못 해 No cheating
+더 깊어지는 갈증, 채워줄게 내가 (That's right)
+끝까지 가보자, We go all night
+
+[Chorus]
+I’m the REAL THING!
+[Vocals - Power Belting]
+너를 미치게 할 단 하나의 Answer
+피할 수 없게 더 파고든 Danger
+WATCH ME NOW!
+본 적 없는 색, 압도적인 Scenery
+네 맘을 훔친 난 완벽한 Felony
+다시 한번 말해, I’m the Boss tonight.
+
+[Bridge]
+Who’s the man? (We are!)
+Who’s the man? (We are!)
+강한 자만이 살아남아 (Yeah!)
+진짜를 원해? Look at us now!
+Oh yeah!!!
+Show you what I got!
+
+[Guitar Solo]
+
+[Chorus]
+YOU KNOW IT!
+절대 거부 못 할 치명적인 Pleasure
+너의 세상을 다 뒤집을 Treasure
+LOVE ME NOW!
+다른 건 잊어, 오직 나만 Memory
+완성해 줄게 너의 그 Fantasy
+영원히 새겨둬, I’m the King tonight.
+
+[Outro]
+Gotcha.` 
+                    }
                 ]
             },
             'mid_1st': {
-                title: 'Night Drive', artist: 'Midnight Blue', cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&w=500&q=80',
+                title: 'Noise Cancelling', 
+                artist: 'Midnight Blue', 
+                cover: 'https://github.com/bella1-cyber/bella/blob/main/aaa789.jpeg?raw=true',
                 tracks: [
-                    { title: 'Highway (Title)', lyrics: "끝없이 펼쳐진 도로 위\n너와 나 단둘이\n\n(Chorus)\nRun away, far away\n도시의 불빛을 뒤로하고..." },
-                    { title: 'City Lights', lyrics: "잠들지 않는 도시의 밤\n수많은 별들보다 빛나는 너..." }
+                    { 
+                        title: 'Noise Cancelling (Title)', 
+                        lyrics: `[Verse 1]
+네 목소리는 Static 귀를 찌르는 사이렌
+의미 없는 변명들 흩어지는 파편
+표정 없는 네 얼굴 꺼진 TV 화면 같아
+더는 수신하고 싶지 않아 너란 주파수
+
+[Verse 2]
+네 침묵은 Howling 머릿속을 맴돌아
+지난밤의 말들이 끝나지 않는 Replay
+여긴 지옥이야, 천국이 아니라
+네 존재 자체가 나를 좀먹고 있잖아!
+
+[Pre-Chorus]
+이제 그만 좀 해
+뭘 더 바라는 건데
+우리 대화는 그냥 소음일 뿐인데!
+
+[Chorus]
+네 모든 게 NOISE!
+제발 좀 SHUT DOWN!
+서로를 지워내려 귀를 막고 소리쳐!
+이 노이즈 캔슬링 속에
+우리 기억은 파괴돼!
+마지막 볼륨마저 꺼지면 다 끝나는 거야!
+
+[Verse 3]
+사랑한다 말하던 그 입으로 이젠
+날카로운 단어만 총알처럼 쏘아대
+너와 나 사이에 남은 건 상처뿐이야
+이 전쟁 같은 사랑 이젠 항복하고 싶어
+
+[Verse 4]
+항복은 누가 먼저 해! 네가 날 망쳤잖아
+웃는 법도 잊었어 네 그림자에 갇혀서
+이 지긋지긋한 악몽 제발 깨어나고 싶어
+차라리 내 손으로 이 필름을 끊어버릴래!
+
+[Bridge]
+...이제 아무 소리도 안 들려.
+...너 때문인지, 나 때문인지도 모르겠어.` 
+                    },
+                    { 
+                        title: 'Midnight Practice Room', 
+                        lyrics: `[Verse 1]
+모두 돌아간 텅 빈 합주실엔
+식어버린 커피와 네 기타 소리만
+어지러운 악보 위 헤매던 멜로디가]
+네 손끝에서 길을 찾아 밤을 유영하네
+
+[Verse 2]
+새벽 세 시의 나른한 공기 속에
+네가 읊조린 가사가 내려앉고 있어
+의미 없던 코드에 이야기가 생겨나
+이 밤의 끝에 우린 어떤 노래가 되어 있을까
+
+[Chorus]
+이건 자정의 합주실 우리 둘만의 주파수
+음과 음 사이에 숨겨둔 수줍은 마음이 흐르고
+가사 없는 멜로디로 서로에게 스며들어 가
+이 노래의 제목은 아마 사랑일 것 같아
+
+[Chorus]
+이건 자정의 합주실 우리 둘만의 주파수
+음과 음 사이에 숨겨둔 수줍은 마음이 흐르고
+가사 없는 멜로디로 서로에게 스며들어 가
+이 노래의 제목은 분명 사랑일 것 같아
+
+[Outro]
+조금만 더...
+같이 있을까...` 
+                    },
+                    { 
+                        title: '두근두근 캠퍼스', 
+                        lyrics: `[Verse 1]
+지루했던 전공 수업 하품만 나오던 오후 세 시
+복도를 스쳐 지나간 네 샴푸 향기에 정신이 번쩍
+나도 모르게 발걸음은 너를 따라가고 있잖아
+저기, 혹시 시간 있어? 입안에서만 맴도는 말
+
+[Pre-Chorus]
+왠지 오늘따라 날씨는 또 왜 이리 좋은 건지
+네 옆모습 위로 햇살이 부서지는 게 꼭 영화 같아
+심장이 자꾸만 간지러워
+
+[Chorus]
+두근두근 캠퍼스 모든 게 너로 보여
+학관 앞 그 벤치에 나란히 앉고 싶어
+네가 좋아하는 노랜 뭘까 주말엔 보통 뭐 해
+시시콜콜한 모든 게 궁금해지는 오후야
+
+[Verse 2]
+중앙도서관 맨 위 칸 까치발 드는 널 발견했지
+슬쩍 다가가 꺼내준 책 고맙다 웃는 얼굴에 심장이 쿵
+우연을 가장한 만남이 벌써 오늘만 세 번째야
+이쯤 되면 이건 운명 아니면 그냥 내 착각일까
+
+[Chorus]
+두근두근 캠퍼스 모든 게 너로 보여
+학관 앞 그 벤치에 나란히 앉고 싶어
+네가 좋아하는 노랜 뭘까 주말엔 보통 뭐 해
+시시콜콜한 모든 게 궁금해지는 오후야
+
+[Bridge]
+커피라도 한잔할래?
+마침 목이 말랐는데
+어색한 침묵마저 설레는 걸
+
+[Outro]
+결국엔 말 못 했지만 내일 또 마주치겠지
+왠지 좋은 예감이 들어 우리 시작할 것만 같아` 
+                    },
+                    { 
+                        title: '일요일 오후 2시', 
+                        lyrics: `[Verse 1]
+햇살이 부서지는 창가에
+기대앉은 너의 실루엣
+공기 중에 뜬 묵은 먼지마저
+오늘은 예쁘게 반짝이네
+
+[Verse 2]
+잠이 덜 깬 고양이의 하품
+식어버린 커피의 향기와
+네 무릎 위엔 낡은 소설책
+그 모든 게 완벽한 오후야
+
+[Chorus]
+시간이 멈춘 것 같아 너와 있는 이 공간
+특별할 것 없는 이 순간이 영원했으면 좋겠어
+달력에 없는 요일 같아 My Sunday morning, you
+
+[Verse 3]
+어디 갈까, 뭘 할까 고민할 필요도 없이
+서로의 숨소리가 가장 좋은 배경음악
+늘어난 내 티셔츠가 너에게 더 잘 어울리는
+이런 사소함들이 나를 웃게 만들어
+
+[Chorus]
+시간이 멈춘 것 같아 너와 있는 이 공간
+특별할 것 없는 이 순간이 영원했으면 좋겠어
+달력에 없는 요일 같아 My Sunday morning, you
+
+[Bridge]
+가장 완벽한 날은
+화려한 날이 아니라
+그냥 너와 함께 숨 쉬는
+바로 지금인 걸
+
+[Outro]
+조금 더 잘까...
+음... 그러자...` 
+                    },
+                    { 
+                        title: '회색 도시의 밤', 
+                        lyrics: `[Verse 1]
+자취방 옥상, 차가운 난간에 기대
+저마다 빛나는 빼곡한 빌딩 숲 사이
+내 한 뼘짜리 꿈은 어디쯤 가고 있나
+한숨 한 모금에 별빛이 흐려지네
+
+[Verse 2]
+닳아빠진 기타와 먼지 낀 낡은 스피커
+답 없는 질문들만 방 안에 쌓여가고
+'내일은 다를 거야' 주문을 외워보지만
+똑같은 하루가 또 나를 삼킬까 두려워
+
+[Pre-Chorus]
+하지만 너와 나, 여기서 노래하잖아
+가진 것 하나 없어도 목청껏 소리치잖아
+
+[Chorus]
+이 회색 도시의 밤, 가장 뜨거운 별은 우리야
+세상이 정한 길 따윈 벗어던지고 노래해
+넘어지고 또 깨져도 괜찮아, 다시 일어나
+서툰 목소리로 부르는 이게 우리의 청춘이야
+
+[Verse 3]
+취업 사진 속 어색한 미소 대신에
+땀으로 젖은 지금 이 얼굴이 좋아
+정답 없는 세상에 우리만의 답을 외치자
+
+[Chorus]
+이 회색 도시의 밤, 가장 뜨거운 별은 우리야
+세상이 정한 길 따윈 벗어던지고 노래해
+넘어지고 또 깨져도 괜찮아, 다시 일어나
+서툰 목소리로 부르는 이게 우리의 청춘이야
+
+[Outro]
+라라라 라라라 라라 라라라
+꺼지지 않을 노래를 부르자
+라라라 라라라 라라 라라라
+내일의 우리에게 닿을 때까지` 
+                    }
                 ]
             }
         };
@@ -1231,4 +1968,3 @@ I love you`
     </script>
 </body>
 </html>
-

@@ -352,25 +352,35 @@
 </head>
 <body>
 
-    <!-- [NEW] 메인 팝업 레이어 (페이지 로드 시 뜸) -->
+<!-- [NEW] 메인 팝업 레이어 (페이지 로드 시 뜸) -->
     <div class="main-popup-layer" id="mainPopupLayer">
         
-        <!-- 팝업 1: 사과문 (왼쪽) -->
+        <!-- 팝업 1: 사과문 (왼쪽) - 텍스트 업데이트 됨 -->
         <div class="popup-window popup-apology" id="popupApology">
             <div class="popup-header">
                 <span style="color:#aaa;">NOTICE</span>
                 <span class="popup-close-btn" onclick="closeMainPopup('popupApology')">CLOSE &times;</span>
             </div>
             <div class="popup-content">
-                <h3 style="margin-bottom:15px; color:#fff;">[공지] 아티스트 관련 안내 말씀 드립니다.</h3>
+                <h3 style="margin-bottom:15px; color:#fff;">[공지] 소속 아티스트 JAY 관련 공식 입장</h3>
                 <div class="apology-text">
-안녕하세요, 아틱스 엔터테인먼트입니다.
+안녕하세요, 아틱스(Artix)입니다.
 
-먼저 당사 소속 아티스트 JAY 군과 관련하여 심려를 끼쳐드린 점, 진심으로 고개 숙여 사과드립니다.
+먼저 소속 아티스트 JAY(권지혁)을 아껴주시는 팬 여러분과 많은 분들께 심려를 끼쳐드린 점, 진심으로 사과드립니다.
 
-현재 온라인상에 유포되고 있는 내용에 대해 당사는 엄중하게 사실관계를 확인 중이며, 팬 여러분께서 걱정하시는 부분이 없도록 최선을 다해 조치하겠습니다.
+최근 온라인 커뮤니티 및 SNS를 통해 유포되고 있는 JAY의 사생활 관련 이슈에 대해 당사의 공식 입장을 전해드립니다.
 
-아티스트 보호와 더불어 성숙한 활동을 위해 더욱 노력하는 아틱스가 되겠습니다. 다시 한번 죄송합니다.
+당사는 사안의 심각성을 인지하고, 본인에게 사실 관계를 확인하였습니다. 확인 결과, 일부 사실과 다른 부분이 있으나 논란이 된 행동 자체에 대해서는 변명의 여지 없이 아티스트 본인의 부주의와 불찰이 있었음을 인정합니다.
+
+현재 JAY는 본인의 경솔한 행동으로 인해 팬 여러분과 멤버들, 그리고 회사에 실망을 안겨드린 점에 대해 깊이 뉘우치고 반성하고 있습니다. 당분간 JAY는 자숙의 시간을 가지며, 성숙하지 못했던 지난날을 되돌아보겠습니다.
+
+당사 역시 소속 아티스트를 세심하게 관리하지 못한 책임을 통감하고 있습니다. 향후 이러한 일이 재발하지 않도록 아티스트 관리에 만전을 기할 것을 약속드립니다.
+
+다시 한번 이번 일로 인해 상처받으셨을 모든 분께 고개 숙여 사죄의 말씀을 드립니다.
+
+죄송합니다.
+
+아틱스 드림
                 </div>
                 <div class="apology-footer">
                     2026. 01. 08<br>ARTIX ENTERTAINMENT
@@ -378,7 +388,7 @@
             </div>
         </div>
 
-        <!-- 팝업 2: 굿즈 판매 (오른쪽) -->
+        <!-- 팝업 2: 굿즈 판매 (오른쪽) - 클릭 시 준비중 알림 -->
         <div class="popup-window popup-goods" id="popupGoods">
             <div class="popup-header">
                 <span style="color:#ff3366;">OFFICIAL STORE</span>
@@ -391,7 +401,8 @@
                     ARTIX ARTISTS 2026 시즌 그리팅 예약 판매 시작!<br>
                     한정판 포토카드 및 스페셜 굿즈를 만나보세요.
                 </div>
-                <a href="https://marpple.shop/kr/" target="_blank" class="goods-btn">
+                <!-- 수정된 부분: href="#" 및 onclick 이벤트 추가 -->
+                <a href="#" onclick="alert('현재 2026 시즌 그리팅 상품 준비 중입니다.\n조금만 기다려주세요!'); return false;" class="goods-btn">
                     GO TO SHOP ↗
                 </a>
             </div>
